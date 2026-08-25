@@ -25,3 +25,24 @@ def cadastrar_idioma(raiz, codigo, descricao):
     raiz = inserir(raiz, codigo, posicao)
 
     return raiz
+
+def desempacotar_idioma(dados_binarios):
+    codigo, descricao = struct.unpack( #pega todos os dados binários e separa em variáveis codigo e descricao
+        FORMATO_IDIOMA,
+        dados_binarios
+    )
+
+    return Idioma(
+        codigo,
+        # .decode() pega os bytes e os transforma em uma string comum do Python
+        # .rstrip("\x00") serve para apagar todos os zeros invisíveis que sobram no final da palavra após a decodificação, garantindo que fique apenas o texto limpo
+        descricao.decode().rstrip("\x00")
+    )
+
+def ler_idioma(posicao):
+    with open("dados/idiomas.dat", "rb") as arquivo:
+        arquivo.seek(posicao * TAMANHO_IDIOMA)
+
+        dados_binarios = arquivo.read(TAMANHO_IDIOMA)
+
+        return desempacotar_idioma(dados_binarios)
