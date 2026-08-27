@@ -1,7 +1,7 @@
 import struct 
 
 from models.idioma import Idioma
-from estrutura.arvore import inserir 
+from estrutura.arvore import inserir, buscar
 
 FORMATO_IDIOMA = "i30s"  # Formato para serialização: inteiro (código) e string de 30 bytes (descrição)
 TAMANHO_IDIOMA = struct.calcsize(FORMATO_IDIOMA)  # Tamanho total do registro de idioma em bytes
@@ -10,7 +10,7 @@ def empacotar_idioma(idioma):
     return struct.pack(
         FORMATO_IDIOMA,
         idioma.codigo,
-        idioma.descricao.encode() 
+        idioma.descricao.encode().ljust(30, b'\x00')
     )
 
 def cadastrar_idioma(raiz, codigo, descricao):
@@ -46,3 +46,33 @@ def ler_idioma(posicao):
         dados_binarios = arquivo.read(TAMANHO_IDIOMA)
 
         return desempacotar_idioma(dados_binarios)
+
+def buscar_idioma(raiz, codigo):
+    resultado = buscar(raiz, codigo)
+
+    if resultado is None:
+        return None
+
+    idioma = ler_idioma(resultado.posicao)
+    return idioma
+
+def carregar_indice_idiomas():
+    raiz = None
+
+    try:
+        with open("dados/idiomas.dat", "rb") as arquivo:
+            posicao = 0
+
+            while True: 
+                dados_binarios = arquivo.read(TAMANHO_IDIOMA)
+                if not dados_binarios:
+                    break
+
+            idioma = desempacotar_idioma(dados_binarios)
+            raiz = inserir(raiz, idioma.codigo, posicao)
+            posicao += 1
+
+    except FileNotFoundError:
+        return raiz
+
+    return raiz

@@ -5,6 +5,20 @@ class No:
         self.esquerda = None
         self.direita = None
 
+def buscar(raiz, codigo):
+    atual = raiz    
+
+    while atual is not None: 
+        if codigo == atual.codigo: 
+            return atual 
+
+        if codigo < atual.codigo:
+            atual = atual.esquerda
+        else:
+            atual = atual.direita
+
+    return None
+
 def inserir(raiz, codigo, posicao):
     novo = No(codigo, posicao)
 
@@ -28,3 +42,4 @@ def inserir(raiz, codigo, posicao):
         pai.direita = novo
 
     return raiz
+

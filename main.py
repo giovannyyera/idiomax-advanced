@@ -1,34 +1,37 @@
-from models.idioma import Idioma
-from estrutura.arvore import inserir
-from services.idioma_service import cadastrar_idioma
+from services.idioma_service import cadastrar_idioma, buscar_idioma, carregar_indice_idiomas
 
-raiz_idiomas = None
 
-codigo = int(input('Código do idioma:  '))
-descricao = input('Descrição do idioma: ')
+raiz_idiomas = carregar_indice_idiomas()
+
+
+codigo = int(input("Código do idioma: "))
+descricao = input("Descrição do idioma: ")
+
 
 raiz_idiomas = cadastrar_idioma(
-    raiz_idiomas, 
+    raiz_idiomas,
     codigo,
     descricao
 )
 
-print('Idioma cadastrado com sucesso!')
 
-def cadastrar_idioma(raiz, dados_idiomas): 
-    codigo = int(input('Código do idioma: '))
-    descricao = input('Descrição do idioma: ')
+print("Idioma cadastrado com sucesso!")
 
-    idioma = Idioma(codigo, descricao)
 
-    posicao = len(dados_idiomas)
-    dados_idiomas.append(idioma)
+codigo_busca = int(
+    input("\nDigite o código para buscar: ")
+)
 
-    raiz = inserir(raiz, codigo, posicao)
 
-    return raiz
+idioma = buscar_idioma(
+    raiz_idiomas,
+    codigo_busca
+)
 
-raiz = None
-dados_idiomas = []
+if idioma is not None:
+    print("\nIdioma encontrado:")
+    print("Código:", idioma.codigo)
+    print("Descrição:", idioma.descricao)
 
-raiz = cadastrar_idioma(raiz, dados_idiomas)
+else:
+    print("\nIdioma não encontrado!")
