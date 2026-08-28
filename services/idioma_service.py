@@ -10,7 +10,7 @@ def empacotar_idioma(idioma):
     return struct.pack(
         FORMATO_IDIOMA,
         idioma.codigo,
-        idioma.descricao.encode().ljust(30, b'\x00')
+        idioma.descricao.encode()
     )
 
 def cadastrar_idioma(raiz, codigo, descricao):
@@ -68,11 +68,19 @@ def carregar_indice_idiomas():
                 if not dados_binarios:
                     break
 
-            idioma = desempacotar_idioma(dados_binarios)
-            raiz = inserir(raiz, idioma.codigo, posicao)
-            posicao += 1
+                idioma = desempacotar_idioma(dados_binarios)
+                raiz = inserir(raiz, idioma.codigo, posicao)
+                posicao += 1
 
     except FileNotFoundError:
         return raiz
 
     return raiz
+
+def listar_idiomas(raiz, lista): 
+    if raiz is not None:
+        listar_idiomas(raiz.esquerda, lista)
+        idioma = ler_idioma(raiz.posicao)
+        lista.append(idioma)
+        listar_idiomas(raiz.direita, lista)
+    return lista
