@@ -2,11 +2,13 @@ from services.idioma_service import cadastrar_idioma, buscar_idioma, carregar_in
 from seed.dados_iniciais import carregar_idiomas_iniciais, carregar_licoes_iniciais, carregar_exercicios_iniciais
 from services.licao_service import buscar_licao_com_idioma, carregar_indice_licoes
 from services.exercicio_service import carregar_indice_exercicios, buscar_exercicio_com_idioma, listar_exercicios
+from services.usuario_service import carregar_indice_usuarios, cadastrar_usuario, listar_usuarios, buscar_usuario_com_idioma, buscar_usuario
 # import os
 
 raiz_idiomas = carregar_indice_idiomas()
 raiz_licoes = carregar_indice_licoes()
 raiz_exercicios = carregar_indice_exercicios()
+raiz_usuarios = carregar_indice_usuarios()
 
 if raiz_idiomas is None:
     raiz_idiomas = carregar_idiomas_iniciais(raiz_idiomas)
@@ -37,8 +39,6 @@ for idioma in idiomas:
 codigo_busca = int(
     input("\nDigite o código para buscar: ")
 )
-
-
 idioma = buscar_idioma(
     raiz_idiomas,
     codigo_busca
@@ -52,6 +52,59 @@ if idioma is not None:
 else:
     print("\nIdioma não encontrado!")
 
+codigo_usuario = int(input("\nDigite o código do usuário: "))
+
+usuario_existente = buscar_usuario(
+    raiz_usuarios,
+    codigo_usuario
+)
+
+if usuario_existente is not None:
+    print("\nCódigo de usuário já existente!")
+
+else:
+    nome_usuario = input("Digite o nome do usuário: ")
+
+    codigo_idioma = int(
+        input("Digite o código do idioma que deseja aprender: ")
+    )
+
+    raiz_usuarios = cadastrar_usuario(
+        raiz_usuarios,
+        raiz_idiomas,
+        codigo_usuario,
+        nome_usuario,
+        codigo_idioma
+    )
+
+codigo_usuario_busca = int(input("\nDigite o código do usuário para buscar: "))
+
+resultado = buscar_usuario_com_idioma(raiz_usuarios, raiz_idiomas, codigo_usuario_busca)
+
+if resultado is not None:
+    usuario, idioma = resultado
+
+    print("\nUsuário encontrado:")
+    print("Código: ", usuario.codigo)
+    print("Nome: ", usuario.nome)
+    print("Idioma aprendizado: ", idioma.descricao)
+    print("Nível atual: ", usuario.nivel_atual)
+    print("Pontuação total: ", usuario.pontuacao_total)
+else:
+    print("\nUsuário não encontrado")
+
+usuarios = listar_usuarios(raiz_usuarios, [])
+
+print("\nUsuários cadastrados:")
+
+for usuario in usuarios:
+    print(
+        usuario.codigo,
+        "-",
+        usuario.nome,
+        "- idioma:",
+        usuario.codigo_idioma_aprendizado
+    )
 
 # tamanho = os.path.getsize("dados/idiomas.dat")
 # print("\nTamanho do arquivo:", tamanho)
@@ -94,3 +147,4 @@ if resultado is not None:
     print("Pontuação: ", exercicio.pontuacao)
 else:
     print("\nExercício não encontrado!")
+
