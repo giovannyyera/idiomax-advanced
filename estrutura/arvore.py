@@ -43,3 +43,41 @@ def inserir(raiz, codigo, posicao):
 
     return raiz
 
+def menor_no(raiz):
+    atual = raiz
+
+    while atual.esquerda is not None:
+        atual = atual.esquerda
+
+    return atual
+
+def excluir(raiz, codigo):
+    if raiz is None:
+        return None
+
+    if codigo < raiz.codigo:
+        raiz.esquerda = excluir(raiz.esquerda, codigo)
+
+    elif codigo > raiz.codigo:
+        raiz.direita = excluir(raiz.direita, codigo)
+
+    else:
+        if raiz.esquerda is None and raiz.direita is None:
+            return None
+
+        elif raiz.esquerda is None:
+            return raiz.direita
+
+        elif raiz.direita is None:
+            return raiz.esquerda
+
+        else:
+            sucessor = menor_no(raiz.direita)
+
+            raiz.codigo = sucessor.codigo 
+            raiz.posicao = sucessor.posicao
+
+            raiz.direita = excluir(raiz.direita, sucessor.codigo)
+
+    return raiz
+    

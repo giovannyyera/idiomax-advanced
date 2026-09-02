@@ -2,7 +2,7 @@ import struct
 
 from models.usuario import Usuario
 from services.idioma_service import buscar_idioma
-from estrutura.arvore import inserir, buscar
+from estrutura.arvore import inserir, buscar, excluir
 
 FORMATO_USUARIO = "i100siii"
 TAMANHO_USUARIO = struct.calcsize(FORMATO_USUARIO)
@@ -87,7 +87,8 @@ def carregar_indice_usuarios():
                     break
 
                 usuario = desempacotar_usuario(dados_binarios)
-                raiz_usuarios = inserir(raiz_usuarios, usuario.codigo, posicao)
+                if usuario.codigo != 0:
+                    raiz_usuarios = inserir(raiz_usuarios, usuario.codigo, posicao)
                 posicao += 1
     except FileNotFoundError:
         return raiz_usuarios
@@ -129,3 +130,29 @@ def atualizar_usuario(raiz_usuarios, usuario):
     
 
     return True
+
+def gerar_ranking(raiz_usuarios):
+    usuarios = listar_usuarios(raiz_usuarios, [])
+
+    ranking = sorted(usuarios, key=lambda usuario: usuario.pontuacao_total, reverse = True)
+
+    return ranking
+
+def excluir_usuario(raiz_usuarios, codigo_usuario):
+    resultado = buscar(raiz_usuarios, codigo_usuario)
+
+    if resultado is None:
+        return raiz_usuarios
+
+    posicao = resultado.posicao
+
+    usuario = ler_usuario(posicao)
+    usuario.codigo = 0
+
+    with open("dados/usuarios.dat", "r+b") as arquivo: #r = ler, + = também escrever, b = binário
+                arquivo.seek(posicao * TAMANHO_USUARIO)
+                arquivo.write(empacotar_usuario(usuario))
+
+    raiz_usuarios = excluir(raiz_usuarios, codigo_usuario)
+
+    return raiz_usuarios
