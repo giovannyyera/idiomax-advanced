@@ -3,6 +3,7 @@ from seed.dados_iniciais import carregar_idiomas_iniciais, carregar_licoes_inici
 from services.licao_service import buscar_licao_com_idioma, carregar_indice_licoes
 from services.exercicio_service import carregar_indice_exercicios, buscar_exercicio_com_idioma, listar_exercicios
 from services.usuario_service import carregar_indice_usuarios, cadastrar_usuario, listar_usuarios, buscar_usuario_com_idioma, buscar_usuario
+from services.pratica_service import pode_praticar_exercicio, responder_exercicio
 # import os
 
 raiz_idiomas = carregar_indice_idiomas()
@@ -148,3 +149,44 @@ if resultado is not None:
 else:
     print("\nExercício não encontrado!")
 
+codigo_usuario_teste = int(input("\nDigite o código do usuário para testar a prática: "))
+
+codigo_exercicio_teste = int(input("Digite o código do exercício: "))
+
+pode_praticar = pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, codigo_usuario_teste, codigo_exercicio_teste)
+
+if pode_praticar:
+    print("\nUsuário pode praticar esse exercício!")
+else:
+    print("\nUsuário não pode praticar!")
+
+codigo_usuario_teste = int(
+    input("\nDigite o código do usuário para responder: ")
+)
+
+codigo_exercicio_teste = int(
+    input("Digite o código do exercício: ")
+)
+
+resposta_usuario = input(
+    "Digite sua resposta: "
+)
+
+resultado = responder_exercicio(
+    raiz_usuarios,
+    raiz_exercicios,
+    codigo_usuario_teste,
+    codigo_exercicio_teste,
+    resposta_usuario
+)
+
+if resultado:
+    usuario_atualizado = buscar_usuario(
+        raiz_usuarios,
+        codigo_usuario_teste
+    )
+
+    print("\nResposta processada!")
+    print("Pontuação atual:", usuario_atualizado.pontuacao_total)
+else:
+    print("\nNão foi possível responder esse exercício.")

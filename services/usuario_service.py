@@ -114,3 +114,18 @@ def listar_usuarios(raiz_usuarios, lista):
         lista.append(usuario)
         listar_usuarios(raiz_usuarios.direita, lista)
     return lista
+
+def atualizar_usuario(raiz_usuarios, usuario):
+    resultado = buscar(raiz_usuarios, usuario.codigo)
+
+    if resultado is None:
+        return False
+
+    posicao = resultado.posicao
+
+    with open("dados/usuarios.dat", "r+b") as arquivo: 
+            arquivo.seek(posicao * TAMANHO_USUARIO)
+            arquivo.write(empacotar_usuario(usuario))
+    
+
+    return True

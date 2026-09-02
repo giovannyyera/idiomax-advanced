@@ -87,6 +87,15 @@ EXERCICIOS_INICIAIS = [
         20
     ),
     (
+        1003,
+        101,
+        2,
+        "Qual é a tradução de 'house'?",
+        ["casa", "carro", "gato", "livro"],
+        "casa",
+        20
+    ),
+    (
         3002,
         103,
         1,
