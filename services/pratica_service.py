@@ -1,8 +1,8 @@
-from services.usuario_service import buscar_usuario, atualizar_usuario
+from services.usuario_service import buscar_usuario, atualizar_usuario, obter_proxima_ordem_conclusao
 from services.exercicio_service import buscar_exercicio
 from services.licao_service import buscar_licao
 
-def pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, codigo_usuario, cod_exercicio):
+def pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usuario, cod_exercicio):
     usuario = buscar_usuario(raiz_usuarios, codigo_usuario)
 
     if usuario is None:
@@ -13,10 +13,18 @@ def pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, codigo_usuario, cod_
     if exercicio is None:
         return False
 
-    if exercicio.nivel_dificuldade <= usuario.nivel_atual:  
-        return True
+    licao = buscar_licao(raiz_licoes, exercicio.cod_licao)
 
-    return False
+    if licao is None:
+        return False
+
+    if licao.cod_idioma != usuario.codigo_idioma_aprendizado:
+        return False
+
+    if exercicio.nivel_dificuldade > usuario.nivel_atual:  
+        return False
+
+    return True
 
 def responder_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usuario, cod_exercicio, resposta_usuario):
     usuario = buscar_usuario(raiz_usuarios, codigo_usuario)
@@ -30,7 +38,7 @@ def responder_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usua
     if licao is None:
         return False
 
-    if not pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, codigo_usuario, cod_exercicio):
+    if not pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usuario, cod_exercicio):
         return False
 
     if resposta_usuario.strip().lower() == exercicio.resposta_correta.strip().lower():
@@ -42,7 +50,10 @@ def responder_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usua
     if usuario.pontuacao_total < 0:
         usuario.pontuacao_total = 0
 
-    verificar_promocao_nivel(usuario, licao)
+    pontuacao_maxima_nivel = usuario.nivel_atual * 100
+
+    if usuario.pontuacao_total > pontuacao_maxima_nivel:
+        usuario.pontuacao_total = pontuacao_maxima_nivel
 
     atualizar_usuario(raiz_usuarios, usuario)
 
@@ -72,3 +83,20 @@ def emitir_certificado(usuario, idioma, licao):
         return None
 
     return {"nome": usuario.nome, "idioma": idioma.descricao, "nivel_concluido": licao.total_niveis}
+
+def finalizar_rodada(raiz_usuarios, raiz_licoes, codigo_usuario, cod_licao):
+    usuario = buscar_usuario(raiz_usuarios, codigo_usuario)
+    licao = buscar_licao(raiz_licoes, cod_licao)
+
+    if usuario is None or licao is None:
+        return False
+
+    promoveu = verificar_promocao_nivel(usuario, licao)
+    concluiu = verificar_conclusao_idioma(usuario, licao)
+
+    if concluiu and usuario.ordem_conclusao == 0:
+        usuario.ordem_conclusao = obter_proxima_ordem_conclusao(raiz_usuarios)
+
+    atualizar_usuario(raiz_usuarios, usuario)
+
+    return promoveu, concluiu

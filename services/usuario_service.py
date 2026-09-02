@@ -4,7 +4,7 @@ from models.usuario import Usuario
 from services.idioma_service import buscar_idioma
 from estrutura.arvore import inserir, buscar, excluir
 
-FORMATO_USUARIO = "i100siii"
+FORMATO_USUARIO = "i100siiii"
 TAMANHO_USUARIO = struct.calcsize(FORMATO_USUARIO)
 
 def empacotar_usuario(usuario):
@@ -14,11 +14,12 @@ def empacotar_usuario(usuario):
         usuario.nome.encode(),
         usuario.codigo_idioma_aprendizado,
         usuario.nivel_atual,
-        usuario.pontuacao_total
+        usuario.pontuacao_total,
+        usuario.ordem_conclusao
     )
 
 def desempacotar_usuario(dados_binarios):
-    codigo, nome, codigo_idioma_aprendizado, nivel_atual, pontuacao_total = struct.unpack(
+    codigo, nome, codigo_idioma_aprendizado, nivel_atual, pontuacao_total, ordem_conclusao = struct.unpack(
         FORMATO_USUARIO,
         dados_binarios
     )
@@ -28,7 +29,8 @@ def desempacotar_usuario(dados_binarios):
         nome.decode().rstrip("\x00"), 
         codigo_idioma_aprendizado, 
         nivel_atual, 
-        pontuacao_total
+        pontuacao_total,
+        ordem_conclusao
     )
 
 def cadastrar_usuario(raiz_usuarios, raiz_idiomas, codigo, nome, codigo_idioma_aprendizado):
@@ -44,8 +46,9 @@ def cadastrar_usuario(raiz_usuarios, raiz_idiomas, codigo, nome, codigo_idioma_a
 
     nivel_atual = 1
     pontuacao_total = 0
+    ordem_conclusao = 0
 
-    usuario = Usuario(codigo, nome, codigo_idioma_aprendizado, nivel_atual, pontuacao_total)
+    usuario = Usuario(codigo, nome, codigo_idioma_aprendizado, nivel_atual, pontuacao_total, ordem_conclusao)
 
     with open ("dados/usuarios.dat", "ab") as arquivo:
         arquivo.seek(0,2)
@@ -134,7 +137,8 @@ def atualizar_usuario(raiz_usuarios, usuario):
 def gerar_ranking(raiz_usuarios):
     usuarios = listar_usuarios(raiz_usuarios, [])
 
-    ranking = sorted(usuarios, key=lambda usuario: usuario.pontuacao_total, reverse = True)
+    ranking = sorted(usuarios, key=lambda usuario: (-usuario.pontuacao_total, usuario.ordem_conclusao if usuario.ordem_conclusao != 0 else float("inf"),
+                                                    usuario.codigo))
 
     return ranking
 
@@ -156,3 +160,14 @@ def excluir_usuario(raiz_usuarios, codigo_usuario):
     raiz_usuarios = excluir(raiz_usuarios, codigo_usuario)
 
     return raiz_usuarios
+
+def obter_proxima_ordem_conclusao(raiz_usuarios):
+    usuarios = listar_usuarios(raiz_usuarios, [])
+
+    maior_ordem = 0
+
+    for usuario in usuarios:
+        if usuario.ordem_conclusao > maior_ordem:
+            maior_ordem  = usuario.ordem_conclusao
+
+    return maior_ordem + 1
