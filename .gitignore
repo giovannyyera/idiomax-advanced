@@ -19,4 +19,21 @@ dados/*.dat
 
 # Logs
 *.log
+
+# Arquivos locais/temporários
 main_antiga.py
+
+# Variáveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Cache/testes
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build/distribuição Python
+build/
+dist/
+*.egg-info/
