@@ -1,6 +1,7 @@
 from services.usuario_service import buscar_usuario, atualizar_usuario, obter_proxima_ordem_conclusao
 from services.exercicio_service import buscar_exercicio
 from services.licao_service import buscar_licao
+from services.idioma_service import buscar_idioma
 
 def pode_praticar_exercicio(raiz_usuarios, raiz_exercicios, raiz_licoes, codigo_usuario, cod_exercicio):
     usuario = buscar_usuario(raiz_usuarios, codigo_usuario)
@@ -100,3 +101,27 @@ def finalizar_rodada(raiz_usuarios, raiz_licoes, codigo_usuario, cod_licao):
     atualizar_usuario(raiz_usuarios, usuario)
 
     return promoveu, concluiu
+
+def emitir_certificado(raiz_usuarios, raiz_idiomas, codigo_usuario):
+    usuario = buscar_usuario(raiz_usuarios, codigo_usuario)
+
+    if usuario is None:
+        return None
+
+    if usuario.ordem_conclusao == 0:
+        return None
+
+    idioma = buscar_idioma(raiz_idiomas, usuario.codigo_idioma_aprendizado)
+
+    if idioma is None:
+        return None
+
+    certificado = {
+        "nome": usuario.nome,
+        "idioma": idioma.descricao,
+        "nivel_concluido": usuario.nivel_atual,
+        "pontuacao_total": usuario.pontuacao_total,
+        "ordem_conclusao": usuario.ordem_conclusao
+    }
+
+    return certificado
