@@ -1,12 +1,15 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 import core.estado as estado
+import os
 
 from services.exercicio_service import listar_exercicios, buscar_exercicio
 from services.licao_service import buscar_licao
 from services.idioma_service import listar_idiomas, buscar_idioma
 from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
+from services.certificado_service import gerar_certificado_pdf
 from api.schemas import UsuarioCreate, RespostaExercicio
 
 
@@ -399,3 +402,37 @@ def certificado_api(codigo: int):
         )
 
     return certificado
+
+@app.get("/usuarios/{codigo}/certificado/pdf")
+def certificado_pdf_api(codigo: int):
+    certificado = emitir_certificado(
+        estado.raiz_usuarios,
+        estado.raiz_idiomas,
+        codigo
+    )
+
+    if certificado is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Usuário ainda não concluiu o idioma"
+        )
+
+    os.makedirs(
+        "certificados",
+        exist_ok=True
+    )
+
+    caminho_pdf = (
+        f"certificados/certificado_{codigo}.pdf"
+    )
+
+    gerar_certificado_pdf(
+        certificado,
+        caminho_pdf
+    )
+
+    return FileResponse(
+        caminho_pdf,
+        media_type="application/pdf",
+        filename=f"certificado_{codigo}.pdf"
+    )
