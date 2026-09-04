@@ -1,0 +1,46 @@
+<div>
+  <h1>Certificado</h1>
+
+  <p *ngIf="carregando">
+    Verificando certificado...
+  </p>
+
+  <p *ngIf="mensagem">
+    {{ mensagem }}
+  </p>
+
+  <div *ngIf="certificado">
+    <h2>
+      Parabéns, {{ certificado.nome }}!
+    </h2>
+
+    <p>
+      Idioma concluído:
+      {{ certificado.idioma }}
+    </p>
+
+    <p>
+      Nível concluído:
+      {{ certificado.nivel_concluido }}
+    </p>
+
+    <p>
+      Pontuação total:
+      {{ certificado.pontuacao_total }}
+    </p>
+
+    <button
+      type="button"
+      (click)="abrirPdf()"
+    >
+      Abrir certificado em PDF
+    </button>
+  </div>
+
+  <button
+    type="button"
+    (click)="voltar()"
+  >
+    Voltar
+  </button>
+</div>

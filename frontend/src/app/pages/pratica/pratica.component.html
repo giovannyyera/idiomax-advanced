@@ -1,0 +1,96 @@
+<div>
+  <h1>Prática</h1>
+
+  <p *ngIf="carregando">
+    Carregando exercícios...
+  </p>
+
+  <p *ngIf="mensagem">
+    {{ mensagem }}
+  </p>
+
+  <div *ngIf="exercicios.length > 0">
+    <h2>Olá, {{ usuario }}!</h2>
+
+    <p>Idioma: {{ idioma }}</p>
+    <p>Nível atual: {{ nivelAtual }}</p>
+    <p>Pontuação: {{ pontuacaoTotal }}</p>
+
+    <hr>
+
+    <p>
+      Exercícios disponíveis:
+      {{ exercicios.length }}
+    </p>
+
+    <div *ngIf="exercicioAtual">
+
+  <h3>
+    Exercício {{ indiceAtual + 1 }} de {{ exercicios.length }}
+  </h3>
+
+  <p>
+    {{ exercicioAtual.descricao }}
+  </p>
+
+  <div
+    *ngFor="let opcao of exercicioAtual.opcoes"
+  >
+    <label>
+      <input
+        type="radio"
+        name="resposta"
+        [value]="opcao"
+        [(ngModel)]="respostaSelecionada"
+      >
+
+      {{ opcao }}
+    </label>
+  </div>
+
+  <button
+    *ngIf="!respostaProcessada"
+    type="button"
+    (click)="responder()"
+    >
+    Responder
+  </button>
+
+  <button
+    *ngIf="respostaProcessada && indiceAtual < exercicios.length - 1"
+    type="button"
+    (click)="proximoExercicio()"
+    >
+    Próximo exercício
+  </button>
+
+  <button
+    *ngIf="
+        respostaProcessada &&
+        indiceAtual === exercicios.length - 1 &&
+        !rodadaFinalizada
+    "
+    type="button"
+    (click)="finalizarRodada()"
+    >
+    Finalizar rodada
+  </button>
+
+  <button
+    *ngIf="rodadaFinalizada"
+    type="button"
+    (click)="voltar()"
+    >
+    Voltar para Home
+  </button>
+
+</div>
+  </div>
+
+  <button
+    type="button"
+    (click)="voltar()"
+  >
+    Voltar
+  </button>
+</div>

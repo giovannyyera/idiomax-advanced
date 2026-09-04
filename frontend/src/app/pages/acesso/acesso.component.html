@@ -1,0 +1,40 @@
+<div class="acesso-container">
+
+  <h1>MaxLanguage</h1>
+
+  <p>
+    Digite seu código de usuário para continuar.
+  </p>
+
+  <input
+    type="number"
+    [(ngModel)]="codigoUsuario"
+    placeholder="Código do usuário"
+  >
+
+  <button
+    type="button"
+    (click)="buscarUsuario()"
+    [disabled]="carregando"
+  >
+    {{ carregando ? 'Consultando...' : 'Entrar' }}
+  </button>
+
+  <p *ngIf="mensagem">
+    {{ mensagem }}
+  </p>
+
+  <div *ngIf="usuarioNaoEncontrado">
+    <p>
+      Ainda não possui cadastro?
+    </p>
+
+    <button
+      type="button"
+      (click)="irParaCadastro()"
+    >
+      Criar cadastro
+    </button>
+  </div>
+
+</div>

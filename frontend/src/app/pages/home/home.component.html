@@ -1,0 +1,35 @@
+<div *ngIf="usuario">
+  <h1>MaxLanguage</h1>
+
+  <h2>Olá, {{ usuario.nome }}!</h2>
+
+  <p>Idioma: {{ usuario.idioma }}</p>
+  <p>Nível atual: {{ usuario.nivel_atual }}</p>
+  <p>Pontuação: {{ usuario.pontuacao_total }}</p>
+
+  <hr>
+
+  <button type="button" (click)="irParaPratica()">
+    Praticar exercícios
+  </button>
+
+  <button type="button" (click)="irParaRanking()">
+    Ver ranking
+  </button>
+
+  <button type="button" (click)="irParaCertificado()">
+    Emitir certificado
+  </button>
+
+  <button type="button" (click)="excluirConta()">
+    Excluir conta
+  </button>
+
+  <button type="button" (click)="sair()">
+    Sair
+  </button>
+</div>
+
+<p *ngIf="mensagem">
+  {{ mensagem }}
+</p>

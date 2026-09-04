@@ -7,7 +7,7 @@ import os
 from services.exercicio_service import listar_exercicios, buscar_exercicio
 from services.licao_service import buscar_licao
 from services.idioma_service import listar_idiomas, buscar_idioma
-from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking
+from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking, obter_proximo_codigo_usuario
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
 from services.certificado_service import gerar_certificado_pdf
 from api.schemas import UsuarioCreate, RespostaExercicio
@@ -104,17 +104,6 @@ def buscar_usuario_api(codigo: int):
 
 @app.post("/usuarios")
 def cadastrar_usuario_api(dados: UsuarioCreate):
-    usuario_existente = buscar_usuario(
-        estado.raiz_usuarios,
-        dados.codigo
-    )
-
-    if usuario_existente is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Já existe um usuário com esse código"
-        )
-
     idioma = buscar_idioma(
         estado.raiz_idiomas,
         dados.codigo_idioma_aprendizado
@@ -126,17 +115,21 @@ def cadastrar_usuario_api(dados: UsuarioCreate):
             detail="Idioma não encontrado"
         )
 
+    codigo_usuario = obter_proximo_codigo_usuario(
+        estado.raiz_usuarios
+    )
+
     estado.raiz_usuarios = cadastrar_usuario(
         estado.raiz_usuarios,
         estado.raiz_idiomas,
-        dados.codigo,
+        codigo_usuario,
         dados.nome,
         dados.codigo_idioma_aprendizado
     )
 
     usuario = buscar_usuario(
         estado.raiz_usuarios,
-        dados.codigo
+        codigo_usuario
     )
 
     return {

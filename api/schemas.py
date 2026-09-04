@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class UsuarioCreate(BaseModel):
-    codigo: int = Field(gt=0)
     nome: str = Field(min_length=1)
     codigo_idioma_aprendizado: int = Field(gt=0)
 

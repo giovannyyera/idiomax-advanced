@@ -1,0 +1,48 @@
+<div>
+  <h1>Ranking</h1>
+
+  <p *ngIf="carregando">
+    Carregando ranking...
+  </p>
+
+  <p *ngIf="mensagem">
+    {{ mensagem }}
+  </p>
+
+  <div *ngIf="ranking.length > 0">
+
+    <div *ngFor="let usuario of ranking">
+
+      <h3>
+        {{ usuario.posicao }}º -
+        {{ usuario.nome }}
+      </h3>
+
+      <p>
+        Idioma:
+        {{ usuario.idioma }}
+      </p>
+
+      <p>
+        Nível:
+        {{ usuario.nivel_atual }}
+      </p>
+
+      <p>
+        Pontuação:
+        {{ usuario.pontuacao_total }}
+      </p>
+
+      <hr>
+
+    </div>
+
+  </div>
+
+  <button
+    type="button"
+    (click)="voltar()"
+  >
+    Voltar
+  </button>
+</div>

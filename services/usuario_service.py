@@ -142,6 +142,17 @@ def gerar_ranking(raiz_usuarios):
 
     return ranking
 
+def obter_proximo_codigo_usuario(raiz_usuarios):
+    usuarios = listar_usuarios(raiz_usuarios, [])
+
+    maior_codigo = 0
+
+    for usuario in usuarios:
+        if usuario.codigo > maior_codigo:
+            maior_codigo = usuario.codigo
+
+    return maior_codigo + 1
+
 def excluir_usuario(raiz_usuarios, codigo_usuario):
     resultado = buscar(raiz_usuarios, codigo_usuario)
 
