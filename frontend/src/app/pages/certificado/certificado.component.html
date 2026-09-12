@@ -1,46 +1,45 @@
-<div>
-  <h1>Certificado</h1>
+<div class="page-container">
+  <div class="card">
+    
+    <div *ngIf="carregando" class="state-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Verificando certificado...</p>
+    </div>
 
-  <p *ngIf="carregando">
-    Verificando certificado...
-  </p>
+    <div *ngIf="mensagem && !carregando" class="alert-box">
+      <p>{{ mensagem }}</p>
+    </div>
 
-  <p *ngIf="mensagem">
-    {{ mensagem }}
-  </p>
+    <div *ngIf="certificado && !carregando" class="certificate-content">
+      <div class="badge-icon">🏆</div>
+      <h1 class="title">Parabéns, {{ certificado.nome }}!</h1>
+      <p class="subtitle">Seu certificado está pronto para download.</p>
 
-  <div *ngIf="certificado">
-    <h2>
-      Parabéns, {{ certificado.nome }}!
-    </h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Idioma</span>
+          <span class="value">{{ certificado.idioma }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Nível Concluído</span>
+          <span class="value">{{ certificado.nivel_concluido }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Pontuação Total</span>
+          <span class="value highlight">{{ certificado.pontuacao_total }}</span>
+        </div>
+      </div>
 
-    <p>
-      Idioma concluído:
-      {{ certificado.idioma }}
-    </p>
+      <button type="button" class="btn btn-primary" (click)="abrirPdf()">
+        📄 Abrir certificado em PDF
+      </button>
+    </div>
 
-    <p>
-      Nível concluído:
-      {{ certificado.nivel_concluido }}
-    </p>
+    <div class="card-footer">
+      <button type="button" class="btn btn-secondary" (click)="voltar()">
+        ← Voltar
+      </button>
+    </div>
 
-    <p>
-      Pontuação total:
-      {{ certificado.pontuacao_total }}
-    </p>
-
-    <button
-      type="button"
-      (click)="abrirPdf()"
-    >
-      Abrir certificado em PDF
-    </button>
   </div>
-
-  <button
-    type="button"
-    (click)="voltar()"
-  >
-    Voltar
-  </button>
 </div>

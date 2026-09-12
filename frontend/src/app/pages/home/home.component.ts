@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
-  Component
+  Component,
+  OnInit
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -17,11 +18,13 @@ import { ApiService } from '../../services/api.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   usuario: any = null;
   mensagem = '';
-
   codigoUsuario = 0;
+
+  // Controle da aba ativa ('dashboard' ou 'configuracoes')
+  abaAtiva: string = 'dashboard';
 
   constructor(
     private route: ActivatedRoute,
@@ -50,6 +53,11 @@ export class HomeComponent {
     });
   }
 
+  // Método para alternar as abas no HTML
+  selecionarAba(aba: string) {
+    this.abaAtiva = aba;
+  }
+
   irParaPratica() {
     this.router.navigate([
       '/pratica',
@@ -59,8 +67,8 @@ export class HomeComponent {
 
   irParaRanking() {
     this.router.navigate([
-        '/ranking',
-        this.codigoUsuario
+      '/ranking',
+      this.codigoUsuario
     ]);
   }
 
@@ -85,7 +93,6 @@ export class HomeComponent {
     ).subscribe({
       next: () => {
         alert('Conta excluída com sucesso.');
-
         this.router.navigate(['/']);
       },
 

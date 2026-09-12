@@ -1,40 +1,48 @@
-<div class="acesso-container">
+<header class="main-header">
 
-  <h1>MaxLanguage</h1>
-
-  <p>
-    Digite seu código de usuário para continuar.
-  </p>
-
-  <input
-    type="number"
-    [(ngModel)]="codigoUsuario"
-    placeholder="Código do usuário"
-  >
-
-  <button
-    type="button"
-    (click)="buscarUsuario()"
-    [disabled]="carregando"
-  >
-    {{ carregando ? 'Consultando...' : 'Entrar' }}
-  </button>
-
-  <p *ngIf="mensagem">
-    {{ mensagem }}
-  </p>
-
-  <div *ngIf="usuarioNaoEncontrado">
-    <p>
-      Ainda não possui cadastro?
-    </p>
-
-    <button
-      type="button"
-      (click)="irParaCadastro()"
-    >
-      Criar cadastro
-    </button>
+  <div class="logo">
+    <img  type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <span class="logo-text">
+      <span class="text-blue">I</span><span class="text-red">DI</span><span class="text-green">O</span><span class="text-gold">M</span><span class="text-blue">A</span><span class="text-red">X</span>
+    </span>
   </div>
 
-</div>
+  <nav class="nav-menu">
+    <a href="home/:codigo" class="nav-link"></a>
+    <a href="" class="nav-link"></a>
+    <a href="#" class="nav-link"></a>
+  </nav>
+
+  <div class="actions">
+    <a href="#" class="btn-login">Entrar</a>
+  </div>
+</header>
+
+<div class="acesso-container">
+
+<main class="page-content">
+  <div class="login-header">
+    <span class="login-tiitle">Login</span>
+    <hr class="logiin-line">
+  </div>
+  <div class="acesso-container">
+
+    <h1 class="title">Bem vindo ao Idiomax</h1>
+    <p class="subtitle">Insira seu codigo de estudante abaixo</p>
+
+    <div class="form-group">
+      <input type="number" class="input-code" [(ngModel)]="codigoUsuario" placeholder="Código do usuário">
+
+      <button type="button" class="btn-submit" (click)="buscarUsuario()" [disabled]="carregando">
+        {{ carregando ? 'Consultando...': 'Enviar' }}
+      </button>
+    </div>
+    <p *ngIf="mensagem" class="feedback-msg">
+      {{ mensagem }}
+    </p>
+
+    <p class="register-text" href="/cadastro">
+      Ainda não é um aluno ? Cadastre-se aqui!
+    </p>
+  </div>
+</main>

@@ -1,48 +1,91 @@
-<div>
-  <h1>Criar cadastro</h1>
+<header class="main-header">
+  <div class="logo">
+    <img type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <span class="logo-text">
+      <span class="m-red">M</span><span class="a-green">a</span><span class="x-yellow">x</span><span class="lang-blue">Language</span>
+    </span>
+  </div>
 
-  <label>
-    Nome
-  </label>
+  <nav class="nav-menu">
+    <a href="home/:codigo" class="nav-link"></a>
+    <a href="" class="nav-link"></a>
+    <a href="#" class="nav-link"></a>
+  </nav>
 
-  <input
-    type="text"
-    [(ngModel)]="nome"
-    placeholder="Digite seu nome"
-  >
+  <div class="actions">
+    <a href="#" class="btn-login">Entrar</a>
+  </div>
+</header>
+<main>
+  
+<div class="cadastro-card">
+  <h1 class="cadastro-title">CADASTRO</h1>
 
-  <br><br>
+  <form class="cadastro-form" (ngSubmit)="cadastrar()">
+    
+    <div class="input-group">
+      <div class="label-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        [(ngModel)]="nome" 
+        name="nome" 
+        placeholder="Nome do usuário" 
+        class="input-field"
+      >
+    </div>
 
-  <label>
-    Idioma
-  </label>
+    <div class="input-group">
+      <div class="label-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        placeholder="Informação adicional" 
+        class="input-field"
+      >
+    </div>
 
-  <select [(ngModel)]="codigoIdioma">
-    <option
-      [ngValue]="null"
+    <div class="input-group">
+      <div class="label-box">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </div>
+      
+      <select 
+        [(ngModel)]="codigoIdioma" 
+        name="codigoIdioma" 
+        class="input-field select-field"
+      >
+        <option [ngValue]="null" disabled selected>Selecione um idioma</option>
+        <option *ngFor="let idioma of idiomas" [ngValue]="idioma.codigo">
+          {{ idioma.descricao }}
+        </option>
+      </select>
+    </div>
+
+    <button
+      type="submit"
+      class="btn-cadastrar"
+      [disabled]="carregando"
     >
-      Selecione um idioma
-    </option>
+      {{ carregando ? 'Cadastrando...' : 'Cadastrar' }}
+    </button>
 
-    <option
-      *ngFor="let idioma of idiomas"
-      [ngValue]="idioma.codigo"
-    >
-      {{ idioma.descricao }}
-    </option>
-  </select>
+    <p *ngIf="mensagem" class="feedback-msg">
+      {{ mensagem }}
+    </p>
 
-  <br><br>
-
-  <button
-    type="button"
-    (click)="cadastrar()"
-    [disabled]="carregando"
-  >
-    {{ carregando ? 'Cadastrando...' : 'Cadastrar' }}
-  </button>
-
-  <p *ngIf="mensagem">
-    {{ mensagem }}
-  </p>
+  </form>
 </div>
+</main>

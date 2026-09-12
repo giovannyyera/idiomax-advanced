@@ -1,35 +1,135 @@
-<div *ngIf="usuario">
-  <h1>MaxLanguage</h1>
+<header class="main-header">
+  <div class="logo">
+    <img type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <span class="logo-text">
+      <span class="text-blue">I</span><span class="text-red">DI</span><span class="text-green">O</span><span class="text-gold">M</span><span class="text-blue">A</span><span class="text-red">X</span>
+    </span>
+  </div>
 
-  <h2>Olá, {{ usuario.nome }}!</h2>
+  <nav class="nav-menu">
+    <a href="home/:codigo" class="nav-link"></a>
+    <a href="" class="nav-link"></a>
+    <a href="#" class="nav-link"></a>
+  </nav>
 
-  <p>Idioma: {{ usuario.idioma }}</p>
-  <p>Nível atual: {{ usuario.nivel_atual }}</p>
-  <p>Pontuação: {{ usuario.pontuacao_total }}</p>
+  <div class="actions">
+    <a href="#" class="btn-login" (click)="sair(); $event.preventDefault()">Sair</a>
+  </div>
+</header>
 
-  <hr>
+<div class="profile-container">
+  
+  <aside class="sidebar">
+    <div class="user-brief">
+      <div class="avatar">D</div>
+      <h3>Olá, {{ usuario?.nome }}!</h3>
+      <p style="font-size: 0.85rem; color: #777;">Membro desde 2026</p>
+    </div>
+    
+    <ul class="menu-list">
+      <li class="menu-item" [class.active]="abaAtiva === 'dashboard'" (click)="selecionarAba('dashboard')" style="cursor: pointer;">
+        <a>Dashboard</a>
+      </li>
 
-  <button type="button" (click)="irParaPratica()">
-    Praticar exercícios
-  </button>
+      <li class="menu-item" (click)="irParaPratica()" style="cursor: pointer;">
+        <a>Praticar Exercícios</a>
+      </li>
 
-  <button type="button" (click)="irParaRanking()">
-    Ver ranking
-  </button>
+      <li class="menu-item">
+        <a href="#">Conquistas & Nível</a>
+      </li>
 
-  <button type="button" (click)="irParaCertificado()">
-    Emitir certificado
-  </button>
+      <li class="menu-item" (click)="irParaCertificado()" style="cursor: pointer;">
+        <a>Emitir certificado de conclusão</a>
+      </li>
 
-  <button type="button" (click)="excluirConta()">
-    Excluir conta
-  </button>
+      <li class="menu-item" (click)="irParaRanking()" style="cursor: pointer;">
+        <a>Meu Rank</a>
+      </li>
 
-  <button type="button" (click)="sair()">
-    Sair
-  </button>
+      <li class="menu-item" [class.active]="abaAtiva === 'configuracoes'" (click)="selecionarAba('configuracoes')" style="cursor: pointer;">
+        <a>Configurações da Conta</a>
+      </li>
+
+      <li class="menu-item" (click)="sair()" style="cursor: pointer;">
+        <a style="color: #C41E3A;">Sair</a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="content-area">
+    
+    <ng-container *ngIf="abaAtiva === 'dashboard'">
+      <section class="card">
+        <h2 class="card-title">Status</h2>
+        <div class="info-grid">
+          <div class="info-box gold">
+            <label>Nível do Perfil</label>
+            <span>{{ usuario?.nivel_atual }}</span>
+          </div>
+          <div class="info-box green">
+            <label>Idioma</label>
+            <span>{{ usuario?.idioma }}</span>
+          </div>
+          <div class="info-box">
+            <label>Pontuação</label>
+            <span>{{ usuario?.pontuacao_total }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title">Conquistas Recentes</h2>
+        <div class="achievements-container">
+          <div class="badge">⭐ Perfil Verificado</div>
+          <div class="badge">🎯 100% de Avaliações Positivas</div>
+          <div class="badge">🔥 5 Dias Seguidos Conectado</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title">Dados Cadastrais</h2>
+        <div class="info-grid">
+          <div>
+            <label style="font-size: 0.85rem; color: #666;">E-mail</label>
+            <p><strong>usuario@email.com</strong></p>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'configuracoes'">
+      <section class="card">
+        <h2 class="card-title">Configurações da Conta</h2>
+        <p style="color: #666; margin-bottom: 20px;">Gerencie suas informações de acesso e da conta.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 16px; max-width: 400px;">
+          <div>
+            <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 4px;">Nome de exibição</label>
+            <input type="text" [value]="usuario?.nome" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 0.85rem; color: #666; margin-bottom: 4px;">E-mail</label>
+            <input type="email" value="usuario@email.com" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title" style="color: #C41E3A;">Exclusão da Conta</h2>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 12px;">Esta ação é permanente e apagará todos os seus dados no Idiomax.</p>
+        
+        <button type="button" (click)="excluirConta()" style="background-color: #C41E3A; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer;">
+          Excluir conta
+        </button>
+
+        <p *ngIf="mensagem" style="margin-top: 10px; color: #C41E3A;">
+          {{ mensagem }}
+        </p>
+      </section>
+    </ng-container>
+
+  </main>
+
 </div>
-
-<p *ngIf="mensagem">
-  {{ mensagem }}
-</p>

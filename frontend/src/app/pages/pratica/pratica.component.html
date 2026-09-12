@@ -1,96 +1,157 @@
-<div>
-  <h1>Prática</h1>
-
-  <p *ngIf="carregando">
-    Carregando exercícios...
-  </p>
-
-  <p *ngIf="mensagem">
-    {{ mensagem }}
-  </p>
-
-  <div *ngIf="exercicios.length > 0">
-    <h2>Olá, {{ usuario }}!</h2>
-
-    <p>Idioma: {{ idioma }}</p>
-    <p>Nível atual: {{ nivelAtual }}</p>
-    <p>Pontuação: {{ pontuacaoTotal }}</p>
-
-    <hr>
-
-    <p>
-      Exercícios disponíveis:
-      {{ exercicios.length }}
-    </p>
-
-    <div *ngIf="exercicioAtual">
-
-  <h3>
-    Exercício {{ indiceAtual + 1 }} de {{ exercicios.length }}
-  </h3>
-
-  <p>
-    {{ exercicioAtual.descricao }}
-  </p>
-
-  <div
-    *ngFor="let opcao of exercicioAtual.opcoes"
-  >
-    <label>
-      <input
-        type="radio"
-        name="resposta"
-        [value]="opcao"
-        [(ngModel)]="respostaSelecionada"
-      >
-
-      {{ opcao }}
-    </label>
+<header class="main-header">
+  <div class="logo">
+    <img type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <span class="logo-text">
+      <span class="text-blue">I</span><span class="text-red">DI</span><span class="text-green">O</span><span class="text-gold">M</span><span class="text-blue">A</span><span class="text-red">X</span>
+    </span>
   </div>
 
-  <button
-    *ngIf="!respostaProcessada"
-    type="button"
-    (click)="responder()"
-    >
-    Responder
-  </button>
+  <nav class="nav-menu">
+    <a href="home/:codigo" class="nav-link"></a>
+    <a href="" class="nav-link"></a>
+    <a href="#" class="nav-link"></a>
+  </nav>
 
-  <button
-    *ngIf="respostaProcessada && indiceAtual < exercicios.length - 1"
-    type="button"
-    (click)="proximoExercicio()"
-    >
-    Próximo exercício
-  </button>
+  <div class="actions">
+    <a href="#" class="btn-login">Entrar</a>
+  </div>
+</header>
 
-  <button
-    *ngIf="
-        respostaProcessada &&
-        indiceAtual === exercicios.length - 1 &&
-        !rodadaFinalizada
-    "
-    type="button"
-    (click)="finalizarRodada()"
-    >
-    Finalizar rodada
-  </button>
+<div class="practice-container">
 
-  <button
-    *ngIf="rodadaFinalizada"
-    type="button"
-    (click)="voltar()"
-    >
-    Voltar para Home
-  </button>
-
-</div>
+  <div class="toast-success" [class.show]="notificacaoSucesso">
+    <span class="toast-icon">✓</span>
+    <span>Resposta correta!</span>
   </div>
 
-  <button
-    type="button"
-    (click)="voltar()"
-  >
-    Voltar
-  </button>
+  <div class="toast-error" [class.show]="notificacaoErro">
+    <span class="toast-icon">✕</span>
+    <span>Resposta incorreta! Tente novamente na próxima.</span>
+  </div>
+
+  <div *ngIf="carregando" class="status-card">
+    <p>Carregando exercícios...</p>
+  </div>
+
+  <div *ngIf="mensagem" class="status-card error">
+    <p>{{ mensagem }}</p>
+  </div>
+
+  <div *ngIf="exercicios.length > 0 && !carregando" class="quiz-wrapper">
+
+    <div class="user-stats-bar">
+      <div class="user-info">
+        <h2>Olá, {{ usuario }}!</h2>
+        <span 
+          class="badge-tag" 
+          [ngClass]="{
+            'tag-ingles': idioma?.toLowerCase() === 'inglês' || idioma?.toLowerCase() === 'ingles',
+            'tag-espanhol': idioma?.toLowerCase() === 'espanhol',
+            'tag-frances': idioma?.toLowerCase() === 'francês' || idioma?.toLowerCase() === 'frances'
+          }"
+        >
+          {{ idioma | titlecase }}
+        </span>
+      </div>
+      <div class="stats-group">
+        <div class="stat-item">
+          <span class="stat-label">Nível</span>
+          <span class="stat-value">{{ nivelAtual }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Pontuação</span>
+          <span class="stat-value gold">{{ pontuacaoTotal }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="exercicioAtual" class="quiz-card">
+
+      <div class="quiz-header">
+        <span class="progress-text">Exercício {{ indiceAtual + 1 }} de {{ exercicios.length }}</span>
+        <div class="progress-bar">
+          <div 
+            class="progress-fill" 
+            [style.width.%]="((indiceAtual + 1) / exercicios.length) * 100"
+            [style.background-color]="
+              indiceAtual === 0 ? '#d93025' : 
+              indiceAtual === 1 ? '#ff7a00' : 
+              (indiceAtual === 2 || indiceAtual === 3) ? '#f9ab00' : 
+              '#1e8e3e'
+            "
+          ></div>
+        </div>
+      </div>
+
+      <h3 class="question-text">
+        {{ exercicioAtual.descricao }}
+      </h3>
+
+      <div class="options-grid">
+        <label 
+          *ngFor="let opcao of exercicioAtual.opcoes" 
+          class="option-card"
+          [class.selected]="respostaSelecionada === opcao"
+        >
+          <input
+            type="radio"
+            name="resposta"
+            [value]="opcao"
+            [(ngModel)]="respostaSelecionada"
+            class="hidden-radio"
+          >
+          <span class="custom-radio"></span>
+          <span class="option-text">{{ opcao }}</span>
+        </label>
+      </div>
+
+      <div class="quiz-actions">
+        <button
+          *ngIf="!respostaProcessada"
+          type="button"
+          class="btn-primary"
+          [disabled]="!respostaSelecionada"
+          (click)="responder()"
+        >
+          Responder
+        </button>
+
+        <button
+          *ngIf="respostaProcessada && indiceAtual < exercicios.length - 1"
+          type="button"
+          class="btn-primary"
+          (click)="proximoExercicio()"
+        >
+          Próximo exercício →
+        </button>
+
+        <button
+          *ngIf="respostaProcessada && indiceAtual === exercicios.length - 1 && !rodadaFinalizada"
+          type="button"
+          class="btn-success"
+          (click)="finalizarRodada()"
+        >
+          Finalizar rodada 🎉
+        </button>
+
+        <button
+          *ngIf="rodadaFinalizada"
+          type="button"
+          class="btn-primary"
+          (click)="voltar()"
+        >
+          Voltar para Home
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="back-footer">
+    <button type="button" class="btn-text" (click)="voltar()">
+      ← Voltar para o painel
+    </button>
+  </div>
+
 </div>

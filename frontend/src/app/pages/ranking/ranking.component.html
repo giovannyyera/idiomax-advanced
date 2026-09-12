@@ -1,48 +1,68 @@
-<div>
-  <h1>Ranking</h1>
+<div class="ranking-container">
 
-  <p *ngIf="carregando">
-    Carregando ranking...
-  </p>
-
-  <p *ngIf="mensagem">
-    {{ mensagem }}
-  </p>
-
-  <div *ngIf="ranking.length > 0">
-
-    <div *ngFor="let usuario of ranking">
-
-      <h3>
-        {{ usuario.posicao }}º -
-        {{ usuario.nome }}
-      </h3>
-
-      <p>
-        Idioma:
-        {{ usuario.idioma }}
-      </p>
-
-      <p>
-        Nível:
-        {{ usuario.nivel_atual }}
-      </p>
-
-      <p>
-        Pontuação:
-        {{ usuario.pontuacao_total }}
-      </p>
-
-      <hr>
-
-    </div>
-
+  <!-- Cabeçalho -->
+  <div class="ranking-header">
+    <h1>🏆 Ranking Geral</h1>
+    <p class="subtitle">Confira os melhores alunos e suas pontuações</p>
   </div>
 
-  <button
-    type="button"
-    (click)="voltar()"
-  >
-    Voltar
-  </button>
+  <!-- Estados de Carregamento e Mensagens -->
+  <div *ngIf="carregando" class="status-card">
+    <p>Carregando ranking...</p>
+  </div>
+
+  <div *ngIf="mensagem" class="status-card error">
+    <p>{{ mensagem }}</p>
+  </div>
+
+  <!-- Lista do Ranking -->
+  <div *ngIf="ranking.length > 0 && !carregando" class="ranking-card">
+    <div 
+      *ngFor="let usuario of ranking" 
+      class="ranking-item"
+      [class.top-1]="usuario.posicao === 1"
+      [class.top-2]="usuario.posicao === 2"
+      [class.top-3]="usuario.posicao === 3"
+    >
+      <!-- Posição com destaque para Top 3 -->
+      <div class="position-badge">
+        <span *ngIf="usuario.posicao === 1">🥇</span>
+        <span *ngIf="usuario.posicao === 2">🥈</span>
+        <span *ngIf="usuario.posicao === 3">🥉</span>
+        <span *ngIf="usuario.posicao > 3">{{ usuario.posicao }}º</span>
+      </div>
+
+      <!-- Detalhes do Usuário -->
+      <div class="user-details">
+        <h3 class="user-name">{{ usuario.nome }}</h3>
+        <div class="user-meta">
+          <span 
+            class="badge-idioma"
+            [ngClass]="{
+              'tag-ingles': usuario.idioma?.toLowerCase() === 'inglês' || usuario.idioma?.toLowerCase() === 'ingles',
+              'tag-espanhol': usuario.idioma?.toLowerCase() === 'espanhol',
+              'tag-frances': usuario.idioma?.toLowerCase() === 'francês' || usuario.idioma?.toLowerCase() === 'frances'
+            }"
+          >
+            {{ usuario.idioma | titlecase }}
+          </span>
+          <span class="level-tag">Nível {{ usuario.nivel_atual }}</span>
+        </div>
+      </div>
+
+      <!-- Pgntuação -->
+      <div class="score-container">
+        <span class="score-value">{{ usuario.pontuacao_total }}</span>
+        <span class="score-label">pts</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botão Voltar -->
+  <div class="back-footer">
+    <button type="button" class="btn-back" (click)="voltar()">
+      ← Voltar para o painel
+    </button>
+  </div>
+
 </div>

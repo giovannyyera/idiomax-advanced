@@ -1,0 +1,136 @@
+.ranking-container {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.ranking-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.ranking-header h1 {
+  font-size: 1.8rem;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* Card Container da Lista */
+.ranking-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* Item da Lista */
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.ranking-item:hover {
+  background-color: #f8fafc;
+}
+
+/* Destaque visual para o Top 3 */
+.ranking-item.top-1 { background-color: #fefce8; }
+.ranking-item.top-2 { background-color: #f8fafc; }
+.ranking-item.top-3 { background-color: #fff7ed; }
+
+/* Posição */
+.position-badge {
+  width: 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #475569;
+  text-align: center;
+}
+
+/* Informações do Usuário */
+.user-details {
+  flex: 1;
+  padding: 0 16px;
+}
+
+.user-name {
+  font-size: 1.05rem;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.user-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Badges de Idioma */
+.badge-idioma {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.tag-ingles { background-color: #dcfce7; color: #15803d; }
+.tag-espanhol { background-color: #fee2e2; color: #b91c1c; }
+.tag-frances { background-color: #dbeafe; color: #1d4ed8; }
+
+.level-tag {
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Pontuação */
+.score-container {
+  text-align: right;
+}
+
+.score-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #d97706;
+  display: block;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Botão Voltar */
+.back-footer {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.btn-back:hover {
+  color: #1a73e8;
+}

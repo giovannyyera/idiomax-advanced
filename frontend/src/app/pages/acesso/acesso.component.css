@@ -1,8 +1,35 @@
-.acesso-container {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 24px;
+/*  Reset Global */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: serif;
+}
+
+
+/* Container de acesso */
+
+.acesso-container {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  padding: 0 20px;
+  margin: 55px auto 0 auto;
+}
+
+
+/* Inputs e botões gerais */
 
 input {
   width: 100%;
@@ -12,4 +39,269 @@ input {
 
 button {
   padding: 10px 18px;
+}
+
+
+/* Header principal */
+
+.main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  min-height: 60px;
+
+  background-color: #FFDEAD;
+
+  padding: 10px 40px;
+
+  border-bottom: 1px solid #dcdcdc;
+}
+
+
+/*  Logo */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+
+/* Cores do Header */
+
+.text-red {
+  color: #d93025;
+}
+
+.text-green {
+  color: #1e8e3e;
+}
+
+.text-gold {
+  color: #f9ab00;
+}
+
+.text-blue {
+  color: #1a73e8;
+}
+
+
+/*  Não usaremos por Enquanto */
+
+.nav-menu {
+  display: flex;
+  gap: 40px;
+
+  margin-left: -150px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #000;
+
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.nav-link:hover {
+  opacity: 0.7;
+}
+
+.btn-login {
+  display: inline-block;
+
+  background-color: #c86800;
+  color: #000;
+
+  text-decoration: none;
+
+  padding: 8px 24px;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  transition: background-color 0.2s ease;
+}
+
+.btn-login:hover {
+  background-color: #a85600;
+}
+
+
+/* Pagina */
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+}
+
+/* Cabeçalho da Página - Login */
+
+.login-header {
+  width: 100%;
+
+  padding: 0 10px;
+
+  margin: 20px auto 0 auto;
+
+  text-align: left;
+}
+
+.login-title {
+  display: block;
+
+  font-size: 22px;
+  color: #222;
+
+  margin-bottom: 2px;
+  padding-left: 2px;
+}
+
+.login-line {
+  width: 100%;
+
+  border: none;
+  border-top: 1px solid #333;
+
+  margin: 0;
+}
+
+
+/* Formularío */
+
+.title {
+  font-size: 34px;
+  font-weight: normal;
+  color: #000;
+
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #777;
+
+  margin-bottom: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/*  Inserir Codigo */
+
+.input-code {
+  width: 100%;
+
+  padding: 15px 5px;
+
+  font-size: 16px;
+
+  border: 1px solid #767676;
+  border-radius: 2px;
+
+  outline: none;
+
+  margin-bottom: 15px;
+
+  color: #333;
+}
+
+.input-code::-webkit-outer-spin-button,
+.input-code::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-code[type="number"] {
+  -moz-appearance: textfield;
+}
+
+
+/*  Botão Enviar */
+
+.btn-submit {
+  padding: 12px 18px;
+  width: 70%;
+  background-color: #2b2e38;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 12px 0;
+
+  font-weight: Bold;
+  font-size: 15px;
+  color: #ffffff;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #777;
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: scale(0.99);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/*  Resposta Back-end */
+
+.feedback-msg {
+  margin-top: 15px;
+
+  font-size: 14px;
+  color: #d93025;
+
+  text-align: left;
+}
+
+
+.register-text {
+  margin-top: 70px;
+
+  font-size: 18px;
+  color: #222;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+
+  color: #222;
+
+  font-size: 18px;
+
+  text-decoration: underline;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  font-family: inherit;
 }
