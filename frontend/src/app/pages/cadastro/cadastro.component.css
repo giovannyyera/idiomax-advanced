@@ -2,11 +2,22 @@
    RESET GLOBAL
    ========================================================= */
 
+main {
+  flex: 1;
+  min-height: calc(100vh - 100px); /* Subtrai a altura aproximada do header */
+  display: flex;
+  align-items: center;            /* Centraliza verticalmente */
+  justify-content: center;        /* Centraliza horizontalmente */
+  padding: 20px;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   width: 100%;
+  height: 100vh;
+  overflow: hidden;
   min-height: 100%;
 }
 
@@ -18,6 +29,17 @@ body {
 
 body {
   font-family: serif;
+  display: flex;
+  flex-direction: column;
+}
+.bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover; /* Cobre a tela inteira sem distorcer */
+  z-index: -1; /* Joga a imagem para trás do header e do card */
 }
 
 
@@ -131,12 +153,12 @@ body {
 
 /* Card Marrom */
 .cadastro-card {
-  background-color: #a76d37;
+  background-color: #FFDEAD;
   width: 100%;
   max-width: 440px;
   padding: 35px 30px;
   border-radius: 20px;
-  margin: 40px auto;
+  margin: 0px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   text-align: center;
   font-family: 'Times New Roman', Times, serif;

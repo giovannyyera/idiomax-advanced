@@ -1,21 +1,33 @@
 <header class="main-header">
+
   <div class="logo">
-    <img type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <img
+      src="Simb.png"
+      alt="Logo Idiomax"
+      class="logo-img"
+    >
+
     <span class="logo-text">
-      <span class="text-blue">I</span><span class="text-red">DI</span><span class="text-green">O</span><span class="text-gold">M</span><span class="text-blue">A</span><span class="text-red">X</span>
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
     </span>
   </div>
 
   <nav class="nav-menu">
-    <a href="home/:codigo" class="nav-link"></a>
-    <a href="" class="nav-link"></a>
-    <a href="#" class="nav-link"></a>
   </nav>
 
   <div class="actions">
-    <a href="#" class="btn-login">Entrar</a>
+    <a href="#" class="btn-login">
+      Sair
+    </a>
   </div>
+
 </header>
+
 
 <div class="practice-container">
 
@@ -26,22 +38,23 @@
 
   <div class="toast-error" [class.show]="notificacaoErro">
     <span class="toast-icon">✕</span>
-    <span>Resposta incorreta! Tente novamente na próxima.</span>
+    <span>Resposta incorreta! {{ mensagem }}</span>
+  </div>
+
+  <div *ngIf="mensagem" class="status-card error">
+    <p> {{ mensagem }}  </p>
   </div>
 
   <div *ngIf="carregando" class="status-card">
     <p>Carregando exercícios...</p>
   </div>
 
-  <div *ngIf="mensagem" class="status-card error">
-    <p>{{ mensagem }}</p>
-  </div>
 
   <div *ngIf="exercicios.length > 0 && !carregando" class="quiz-wrapper">
 
     <div class="user-stats-bar">
       <div class="user-info">
-        <h2>Olá, {{ usuario }}!</h2>
+        <h2>{{ usuario }}</h2>
         <span 
           class="badge-tag" 
           [ngClass]="{
@@ -92,12 +105,14 @@
           *ngFor="let opcao of exercicioAtual.opcoes" 
           class="option-card"
           [class.selected]="respostaSelecionada === opcao"
+          [class.disabled]="respostaProcessada"
         >
           <input
             type="radio"
             name="resposta"
             [value]="opcao"
             [(ngModel)]="respostaSelecionada"
+            [disabled]="respostaProcessada"
             class="hidden-radio"
           >
           <span class="custom-radio"></span>

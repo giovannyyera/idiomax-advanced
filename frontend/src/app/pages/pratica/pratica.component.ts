@@ -88,7 +88,7 @@ export class PraticaComponent implements OnInit {
         if (resposta.acertou) {
           this.exibirNotificacaoSucesso();
         } else {
-          this.exibirNotificacaoErro(`Resposta incorreta. Correta: ${resposta.resposta_correta}`);
+          this.exibirNotificacaoErro(`Resposta Correta: ${resposta.resposta_correta}`);
         }
 
         this.respostaProcessada = true;

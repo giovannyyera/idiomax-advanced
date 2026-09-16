@@ -1,20 +1,31 @@
 <header class="main-header">
+
   <div class="logo">
-    <img type="image/png" src="Simb.png" alt="MaxLanguage" class="logo-img">
+    <img
+      src="Simb.png"
+      alt="Logo Idiomax"
+      class="logo-img"
+    >
+
     <span class="logo-text">
-      <span class="text-blue">I</span><span class="text-red">DI</span><span class="text-green">O</span><span class="text-gold">M</span><span class="text-blue">A</span><span class="text-red">X</span>
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
     </span>
   </div>
 
   <nav class="nav-menu">
-    <a href="home/:codigo" class="nav-link"></a>
-    <a href="" class="nav-link"></a>
-    <a href="#" class="nav-link"></a>
   </nav>
 
   <div class="actions">
-    <a href="#" class="btn-login" (click)="sair(); $event.preventDefault()">Sair</a>
+    <a href="#" class="btn-login">
+      Sair
+    </a>
   </div>
+
 </header>
 
 <div class="profile-container">
@@ -67,7 +78,10 @@
             <label>Nível do Perfil</label>
             <span>{{ usuario?.nivel_atual }}</span>
           </div>
-          <div class="info-box green">
+          <div class="info-box"[style.border-left-color]="
+            usuario?.idioma?.toLowerCase().includes('inglês') ? '#008751' :
+            usuario?.idioma?.toLowerCase().includes('francês') ? '#1a73e8' :
+            usuario?.idioma?.toLowerCase().includes('espanhol') ? '#d93025' : '#0047AB'">
             <label>Idioma</label>
             <span>{{ usuario?.idioma }}</span>
           </div>
@@ -83,7 +97,6 @@
         <div class="achievements-container">
           <div class="badge">⭐ Perfil Verificado</div>
           <div class="badge">🎯 100% de Avaliações Positivas</div>
-          <div class="badge">🔥 5 Dias Seguidos Conectado</div>
         </div>
       </section>
 
