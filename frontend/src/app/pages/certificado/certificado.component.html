@@ -1,6 +1,26 @@
+<header class="main-header">
+  <div class="logo">
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+    <span class="logo-text">
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
+    </span>
+  </div>
+
+  <nav class="nav-menu"></nav>
+
+  <div class="actions">
+    <a href="#" class="btn-login"> Sair </a>
+  </div>
+</header>
+
 <div class="page-container">
   <div class="card">
-    
     <div *ngIf="carregando" class="state-container">
       <div class="spinner"></div>
       <p class="loading-text">Verificando certificado...</p>
@@ -36,10 +56,7 @@
     </div>
 
     <div class="card-footer">
-      <button type="button" class="btn btn-secondary" (click)="voltar()">
-        ← Voltar
-      </button>
+      <button type="button" class="btn btn-secondary" (click)="voltar()">← Voltar para o painel</button>
     </div>
-
   </div>
 </div>

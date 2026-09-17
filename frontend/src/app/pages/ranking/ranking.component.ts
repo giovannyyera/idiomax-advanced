@@ -67,4 +67,10 @@ export class RankingComponent {
         this.codigoUsuario
     ]);
     }
+
+  sair() {
+    this.router.navigate([
+      '/'
+    ]);
+  }
 }
