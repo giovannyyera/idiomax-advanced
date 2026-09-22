@@ -1,11 +1,6 @@
 <header class="main-header">
-
   <div class="logo">
-    <img
-      src="Simb.png"
-      alt="Logo Idiomax"
-      class="logo-img"
-    >
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
 
     <span class="logo-text">
       <span class="text-blue">I</span>
@@ -17,20 +12,14 @@
     </span>
   </div>
 
-  <nav class="nav-menu">
-  </nav>
+  <nav class="nav-menu"></nav>
 
   <div class="actions">
-    <a href="#" class="btn-login">
-      Sair
-    </a>
+    <a href="#" class="btn-login"> Sair </a>
   </div>
-
 </header>
 
-
 <div class="practice-container">
-
   <div class="toast-success" [class.show]="notificacaoSucesso">
     <span class="toast-icon">✓</span>
     <span>Resposta correta!</span>
@@ -42,25 +31,24 @@
   </div>
 
   <div *ngIf="mensagem" class="status-card error">
-    <p> {{ mensagem }}  </p>
+    <p>{{ mensagem }}</p>
   </div>
 
   <div *ngIf="carregando" class="status-card">
     <p>Carregando exercícios...</p>
   </div>
 
-
   <div *ngIf="exercicios.length > 0 && !carregando" class="quiz-wrapper">
-
     <div class="user-stats-bar">
       <div class="user-info">
         <h2>{{ usuario }}</h2>
-        <span 
-          class="badge-tag" 
+        <span
+          class="badge-tag"
           [ngClass]="{
             'tag-ingles': idioma?.toLowerCase() === 'inglês' || idioma?.toLowerCase() === 'ingles',
             'tag-espanhol': idioma?.toLowerCase() === 'espanhol',
-            'tag-frances': idioma?.toLowerCase() === 'francês' || idioma?.toLowerCase() === 'frances'
+            'tag-frances':
+              idioma?.toLowerCase() === 'francês' || idioma?.toLowerCase() === 'frances',
           }"
         >
           {{ idioma | titlecase }}
@@ -79,18 +67,22 @@
     </div>
 
     <div *ngIf="exercicioAtual" class="quiz-card">
-
       <div class="quiz-header">
-        <span class="progress-text">Exercício {{ indiceAtual + 1 }} de {{ exercicios.length }}</span>
+        <span class="progress-text"
+          >Exercício {{ indiceAtual + 1 }} de {{ exercicios.length }}</span
+        >
         <div class="progress-bar">
-          <div 
-            class="progress-fill" 
+          <div
+            class="progress-fill"
             [style.width.%]="((indiceAtual + 1) / exercicios.length) * 100"
             [style.background-color]="
-              indiceAtual === 0 ? '#d93025' : 
-              indiceAtual === 1 ? '#ff7a00' : 
-              (indiceAtual === 2 || indiceAtual === 3) ? '#f9ab00' : 
-              '#1e8e3e'
+              indiceAtual === 0
+                ? '#d93025'
+                : indiceAtual === 1
+                  ? '#ff7a00'
+                  : indiceAtual === 2 || indiceAtual === 3
+                    ? '#f9ab00'
+                    : '#1e8e3e'
             "
           ></div>
         </div>
@@ -101,8 +93,8 @@
       </h3>
 
       <div class="options-grid">
-        <label 
-          *ngFor="let opcao of exercicioAtual.opcoes" 
+        <label
+          *ngFor="let opcao of exercicioAtual.opcoes"
           class="option-card"
           [class.selected]="respostaSelecionada === opcao"
           [class.disabled]="respostaProcessada"
@@ -114,7 +106,7 @@
             [(ngModel)]="respostaSelecionada"
             [disabled]="respostaProcessada"
             class="hidden-radio"
-          >
+          />
           <span class="custom-radio"></span>
           <span class="option-text">{{ opcao }}</span>
         </label>
@@ -149,24 +141,14 @@
           Finalizar rodada 🎉
         </button>
 
-        <button
-          *ngIf="rodadaFinalizada"
-          type="button"
-          class="btn-primary"
-          (click)="voltar()"
-        >
+        <button *ngIf="rodadaFinalizada" type="button" class="btn-primary" (click)="voltar()">
           Voltar para Home
         </button>
       </div>
-
     </div>
-
   </div>
 
   <div class="back-footer">
-    <button type="button" class="btn-text" (click)="voltar()">
-      ← Voltar para o painel
-    </button>
+    <button type="button" class="btn-text" (click)="voltar()">← Voltar para o painel</button>
   </div>
-
 </div>

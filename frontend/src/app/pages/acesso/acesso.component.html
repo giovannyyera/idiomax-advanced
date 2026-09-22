@@ -1,11 +1,6 @@
 <header class="main-header">
-
   <div class="logo">
-    <img
-      src="Simb.png"
-      alt="Logo Idiomax"
-      class="logo-img"
-    >
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
 
     <span class="logo-text">
       <span class="text-blue">I</span>
@@ -17,54 +12,34 @@
     </span>
   </div>
 
-  <nav class="nav-menu">
-  </nav>
+  <nav class="nav-menu"></nav>
 
   <div class="actions">
-    <a href="#" class="btn-login">
-      Entrar
-    </a>
+    <a href="#" class="btn-login"> Entrar </a>
   </div>
-
 </header>
 
-
 <main class="login-page">
-
   <!-- LADO ESQUERDO -->
   <section class="presentation">
-
     <div class="presentation-content">
-
       <h1>
-        Idiomas<br>
-        conectam<br>
+        Idiomas<br />
+        conectam<br />
         você ao <span>mundo.</span>
       </h1>
 
       <p>
-        Aprenda, explore, descubra.<br>
+        Aprenda, explore, descubra.<br />
         Com o Idiomax, o mundo fala com você.
       </p>
-
     </div>
-
   </section>
-
 
   <!-- LADO DIREITO / LOGIN -->
   <section class="login-area">
-
     <div class="login-card">
-
-      <!-- símbolo -->
-      <img
-        src="Simb.png"
-        alt="Símbolo Idiomax"
-        class="card-logo"
-      >
-
-      <!-- nome -->
+      <img src="Simb.png" alt="Símbolo Idiomax" class="card-logo" />
       <div class="card-brand">
         <span class="text-blue">I</span>
         <span class="text-red">DI</span>
@@ -74,70 +49,38 @@
         <span class="text-red">X</span>
       </div>
 
-
       <h2>Bem-vindo ao Idiomax</h2>
 
-      <p class="subtitle">
-        Insira seu código de estudante abaixo
-      </p>
-
+      <p class="subtitle">Insira seu código de estudante abaixo</p>
 
       <!-- FORMULÁRIO -->
       <div class="form-group">
-
         <input
           type="number"
           class="input-code"
           [(ngModel)]="codigoUsuario"
           placeholder="Código do usuário"
-        >
+        />
 
-        <button
-          type="button"
-          class="btn-submit"
-          (click)="buscarUsuario()"
-          [disabled]="carregando"
-        >
-
+        <button type="button" class="btn-submit" (click)="buscarUsuario()" [disabled]="carregando">
           {{ carregando ? 'Consultando...' : 'Entrar' }}
 
-          <span *ngIf="!carregando" class="arrow">
-            →
-          </span>
-
+          <span *ngIf="!carregando" class="arrow"> → </span>
         </button>
-
       </div>
 
-
       <!-- RETORNO DO BACK-END -->
-      <p
-        *ngIf="mensagem"
-        class="feedback-msg"
-      >
+      <p *ngIf="mensagem" class="feedback-msg">
         {{ mensagem }}
       </p>
 
-
       <div class="divider"></div>
 
-
-      <!-- CADASTRO -->
       <div class="register-area">
-
         <p>Ainda não é um aluno?</p>
 
-        <a
-          href="/cadastro"
-          class="register-link"
-        >
-          Cadastre-se aqui!
-        </a>
-
+        <a href="/cadastro" class="register-link"> Cadastre-se aqui! </a>
       </div>
-
     </div>
-
   </section>
-
 </main>
