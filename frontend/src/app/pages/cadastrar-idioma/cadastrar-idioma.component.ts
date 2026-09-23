@@ -15,8 +15,6 @@ import { ApiService } from '../../services/api.service';
 })
 export class CadastrarIdiomaComponent {
   codigoUsuario = 0;
-
-  codigoIdioma: number | null = null;
   descricao = '';
 
   mensagem = '';
@@ -38,8 +36,8 @@ export class CadastrarIdiomaComponent {
     this.mensagem = '';
     this.sucesso = false;
 
-    if (this.codigoIdioma === null || this.codigoIdioma <= 0 || !this.descricao.trim()) {
-      this.mensagem = 'Preencha todos os campos corretamente.';
+    if (!this.descricao.trim()) {
+      this.mensagem = 'Informe o nome do idioma.';
       return;
     }
 
@@ -47,16 +45,15 @@ export class CadastrarIdiomaComponent {
 
     this.apiService
       .cadastrarIdioma({
-        codigo: this.codigoIdioma,
         descricao: this.descricao.trim(),
       })
       .subscribe({
-        next: () => {
+        next: (resposta: any) => {
           this.carregando = false;
           this.sucesso = true;
-          this.mensagem = 'Idioma cadastrado com sucesso.';
 
-          this.codigoIdioma = null;
+          this.mensagem = `Idioma ${resposta.idioma.codigo} - ${resposta.idioma.descricao} cadastrado com sucesso.`;
+
           this.descricao = '';
 
           this.cdr.markForCheck();
@@ -66,7 +63,7 @@ export class CadastrarIdiomaComponent {
           this.carregando = false;
 
           if (erro.status === 409) {
-            this.mensagem = 'Já existe um idioma com esse código.';
+            this.mensagem = 'Este idioma já está cadastrado.';
           } else {
             this.mensagem = 'Não foi possível cadastrar o idioma.';
           }

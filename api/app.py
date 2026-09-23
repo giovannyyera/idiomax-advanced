@@ -6,7 +6,7 @@ import os
 
 from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio, obter_proximo_codigo_exercicio
 from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao, obter_proximo_codigo_licao
-from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma
+from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma, obter_proximo_codigo_idioma
 from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking, obter_proximo_codigo_usuario
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
 from services.certificado_service import gerar_certificado_pdf
@@ -432,25 +432,35 @@ def certificado_pdf_api(codigo: int):
 
 @app.post("/idiomas")
 def cadastrar_idioma_api(dados: IdiomaCreate):
-    if buscar_idioma(
+    idiomas = listar_idiomas(
         estado.raiz_idiomas,
-        dados.codigo
-    ) is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Código de idioma já cadastrado."
-        )
+        []
+    )
+
+    for idioma in idiomas:
+        if (
+            idioma.descricao.strip().lower()
+            == dados.descricao.strip().lower()
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="Este idioma já está cadastrado."
+            )
+
+    codigo_idioma = obter_proximo_codigo_idioma(
+        estado.raiz_idiomas
+    )
 
     estado.raiz_idiomas = cadastrar_idioma(
         estado.raiz_idiomas,
-        dados.codigo,
+        codigo_idioma,
         dados.descricao
     )
 
     return {
         "mensagem": "Idioma cadastrado com sucesso.",
         "idioma": {
-            "codigo": dados.codigo,
+            "codigo": codigo_idioma,
             "descricao": dados.descricao
         }
     }

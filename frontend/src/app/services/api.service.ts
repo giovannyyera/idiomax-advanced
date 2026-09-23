@@ -55,7 +55,7 @@ export class ApiService {
     return this.http.delete(`${this.apiUrl}/usuarios/${codigo}`);
   }
 
-  cadastrarIdioma(dados: { codigo: number; descricao: string }) {
+  cadastrarIdioma(dados: { descricao: string }) {
     return this.http.post(`${this.apiUrl}/idiomas`, dados);
   }
 

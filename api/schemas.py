@@ -45,7 +45,6 @@ class RespostaExercicio(BaseModel):
 
 
 class IdiomaCreate(BaseModel):
-    codigo: int = Field(gt=0)
     descricao: str = Field(min_length=1)
 
     @field_validator("descricao")
@@ -54,7 +53,9 @@ class IdiomaCreate(BaseModel):
         valor = valor.strip()
 
         if not valor:
-            raise ValueError("A descrição do idioma é obrigatória.")
+            raise ValueError(
+                "A descrição do idioma é obrigatória."
+            )
 
         return valor
 

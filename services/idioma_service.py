@@ -87,3 +87,14 @@ def listar_idiomas(raiz, lista):
         lista.append(idioma)
         listar_idiomas(raiz.direita, lista)
     return lista
+
+def obter_proximo_codigo_idioma(raiz_idiomas):
+    idiomas = listar_idiomas(raiz_idiomas, [])
+
+    maior_codigo = 0
+
+    for idioma in idiomas:
+        if idioma.codigo > maior_codigo:
+            maior_codigo = idioma.codigo
+
+    return maior_codigo + 1
