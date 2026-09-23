@@ -1,7 +1,7 @@
 import struct 
 
 from models.licao import Licao
-from estrutura.arvore import inserir, buscar
+from estrutura.arvore import inserir, buscar, excluir
 from services.idioma_service import buscar_idioma
 
 FORMATO_LICAO = "iii" # 3 inteiros em licao.py
@@ -78,7 +78,8 @@ def carregar_indice_licoes():
                     break
 
                 licao = desempacotar_licao(dados_binarios)
-                raiz_licao = inserir(raiz_licao, licao.cod_licao, posicao)
+                if licao.cod_licao != 0:
+                    raiz_licao = inserir(raiz_licao, licao.cod_licao, posicao)
                 posicao += 1
     except FileNotFoundError:
         return raiz_licao
@@ -116,3 +117,22 @@ def obter_proximo_codigo_licao(raiz_licoes):
             maior_codigo = licao.cod_licao
 
     return maior_codigo + 1
+
+def excluir_licao(raiz_licoes, codigo):
+    resultado = buscar(raiz_licoes, codigo)
+
+    if resultado is None:
+        return raiz_licoes
+
+    posicao = resultado.posicao
+
+    licao = ler_licao(posicao)
+    licao.cod_licao = 0
+
+    with open("dados/licoes.dat", "r+b") as arquivo:
+        arquivo.seek(posicao * TAMANHO_LICAO)
+        arquivo.write(empacotar_licao(licao))
+
+    raiz_licoes = excluir(raiz_licoes, codigo)
+
+    return raiz_licoes

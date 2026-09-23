@@ -4,9 +4,9 @@ from fastapi.responses import FileResponse
 import core.estado as estado
 import os
 
-from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio, obter_proximo_codigo_exercicio
-from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao, obter_proximo_codigo_licao
-from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma, obter_proximo_codigo_idioma
+from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio, obter_proximo_codigo_exercicio, excluir_exercicio
+from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao, obter_proximo_codigo_licao, excluir_licao
+from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma, obter_proximo_codigo_idioma, excluir_idioma
 from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking, obter_proximo_codigo_usuario
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
 from services.certificado_service import gerar_certificado_pdf
@@ -608,3 +608,105 @@ def listar_exercicios_api():
         })
 
     return resultado
+
+@app.delete("/exercicios/{codigo}")
+def excluir_exercicio_api(codigo: int):
+    exercicio = buscar_exercicio(
+        estado.raiz_exercicios,
+        codigo
+    )
+
+    if exercicio is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Exercício não encontrado."
+        )
+
+    estado.raiz_exercicios = excluir_exercicio(
+        estado.raiz_exercicios,
+        codigo
+    )
+
+    return {
+        "mensagem": "Exercício excluído com sucesso."
+    }
+
+@app.delete("/licoes/{codigo}")
+def excluir_licao_api(codigo: int):
+    licao = buscar_licao(
+        estado.raiz_licoes,
+        codigo
+    )
+
+    if licao is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Lição não encontrada."
+        )
+
+    exercicios = listar_exercicios(
+        estado.raiz_exercicios,
+        []
+    )
+
+    for exercicio in exercicios:
+        if exercicio.cod_licao == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir a lição porque existem exercícios vinculados."
+            )
+
+    estado.raiz_licoes = excluir_licao(
+        estado.raiz_licoes,
+        codigo
+    )
+
+    return {
+        "mensagem": "Lição excluída com sucesso."
+    }
+
+@app.delete("/idiomas/{codigo}")
+def excluir_idioma_api(codigo: int):
+    idioma = buscar_idioma(
+        estado.raiz_idiomas,
+        codigo
+    )
+
+    if idioma is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Idioma não encontrado."
+        )
+
+    licoes = listar_licoes(
+        estado.raiz_licoes,
+        []
+    )
+
+    for licao in licoes:
+        if licao.cod_idioma == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir o idioma porque existem lições vinculadas."
+            )
+
+    usuarios = listar_usuarios(
+        estado.raiz_usuarios,
+        []
+    )
+
+    for usuario in usuarios:
+        if usuario.codigo_idioma_aprendizado == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir o idioma porque existem usuários vinculados."
+            )
+
+    estado.raiz_idiomas = excluir_idioma(
+        estado.raiz_idiomas,
+        codigo
+    )
+
+    return {
+        "mensagem": "Idioma excluído com sucesso."
+    }

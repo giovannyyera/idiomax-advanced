@@ -1,7 +1,7 @@
 import struct 
 
 from models.idioma import Idioma
-from estrutura.arvore import inserir, buscar
+from estrutura.arvore import inserir, buscar, excluir
 
 FORMATO_IDIOMA = "i30s"  # Formato para serialização: inteiro (código) e string de 30 bytes (descrição)
 TAMANHO_IDIOMA = struct.calcsize(FORMATO_IDIOMA)  # Tamanho total do registro de idioma em bytes
@@ -72,7 +72,8 @@ def carregar_indice_idiomas():
                     break
 
                 idioma = desempacotar_idioma(dados_binarios)
-                raiz = inserir(raiz, idioma.codigo, posicao)
+                if idioma.codigo != 0:
+                    raiz = inserir(raiz, idioma.codigo, posicao)
                 posicao += 1
 
     except FileNotFoundError:
@@ -98,3 +99,22 @@ def obter_proximo_codigo_idioma(raiz_idiomas):
             maior_codigo = idioma.codigo
 
     return maior_codigo + 1
+
+def excluir_idioma(raiz_idiomas, codigo):
+    resultado = buscar(raiz_idiomas, codigo)
+
+    if resultado is None:
+        return raiz_idiomas
+
+    posicao = resultado.posicao
+
+    idioma = ler_idioma(posicao)
+    idioma.codigo = 0
+
+    with open("dados/idiomas.dat", "r+b") as arquivo:
+        arquivo.seek(posicao * TAMANHO_IDIOMA)
+        arquivo.write(empacotar_idioma(idioma))
+
+    raiz_idiomas = excluir(raiz_idiomas, codigo)
+
+    return raiz_idiomas
