@@ -60,7 +60,6 @@ class IdiomaCreate(BaseModel):
 
 
 class ExercicioCreate(BaseModel):
-    codigo: int = Field(gt=0)
     codigo_licao: int = Field(gt=0)
     nivel_dificuldade: int = Field(ge=1, le=3)
     descricao: str = Field(min_length=1)
@@ -79,6 +78,4 @@ class ExercicioCreate(BaseModel):
         return opcoes
 
 class LicaoCreate(BaseModel):
-    codigo: int = Field(gt=0)
     codigo_idioma: int = Field(gt=0)
-    total_niveis: int = Field(gt=0)

@@ -23,7 +23,9 @@ export class HomeComponent implements OnInit {
   mensagem = '';
   codigoUsuario = 0;
 
-  // Controle da aba ativa ('dashboard' ou 'configuracoes')
+  mostrarAreaAdmin = true;
+
+  // Controle da aba ativa
   abaAtiva: string = 'dashboard';
 
   constructor(
@@ -68,6 +70,13 @@ export class HomeComponent implements OnInit {
   irParaRanking() {
     this.router.navigate([
       '/ranking',
+      this.codigoUsuario
+    ]);
+  }
+
+  irParaAdmin() {
+    this.router.navigate([
+      '/admin',
       this.codigoUsuario
     ]);
   }

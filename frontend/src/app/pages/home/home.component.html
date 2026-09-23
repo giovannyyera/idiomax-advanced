@@ -52,6 +52,15 @@
       </li>
 
       <li
+        *ngIf="mostrarAreaAdmin"
+        class="menu-item"
+        (click)="irParaAdmin()"
+        style="cursor: pointer"
+      >
+        <a>Gerenciar Conteúdo</a>
+      </li>
+
+      <li
         class="menu-item"
         [class.active]="abaAtiva === 'configuracoes'"
         (click)="selecionarAba('configuracoes')"

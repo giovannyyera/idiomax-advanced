@@ -121,3 +121,21 @@ def listar_exercicios(raiz_exercicios, lista):
         lista.append(exercicio)
         listar_exercicios(raiz_exercicios.direita, lista)
     return lista
+
+def obter_proximo_codigo_exercicio(raiz_exercicios, raiz_licoes, cod_licao):
+    licao = buscar_licao(raiz_licoes, cod_licao)
+
+    if licao is None:
+        return None
+
+    codigo_base = licao.cod_idioma * 1000
+
+    exercicios = listar_exercicios(raiz_exercicios, [])
+
+    maior_codigo = codigo_base
+
+    for exercicio in exercicios:
+        if(exercicio.cod_licao == cod_licao and exercicio.cod_exercicio > maior_codigo):
+            maior_codigo = exercicio = exercicio.cod_exercicio
+
+    return maior_codigo + 1

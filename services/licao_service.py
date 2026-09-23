@@ -105,3 +105,14 @@ def listar_licoes(raiz_licao, lista):
         lista.append(licao)
         listar_licoes(raiz_licao.direita, lista)
     return lista
+
+def obter_proximo_codigo_licao(raiz_licoes):
+    licoes = listar_licoes(raiz_licoes, [])
+
+    maior_codigo = 100
+
+    for licao in licoes:
+        if licao.cod_licao > maior_codigo:
+            maior_codigo = licao.cod_licao
+
+    return maior_codigo + 1

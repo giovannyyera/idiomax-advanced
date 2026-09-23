@@ -1,0 +1,133 @@
+<header class="main-header">
+  <div class="logo">
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+    <span class="logo-text">
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
+    </span>
+  </div>
+
+  <div class="header-title">Administração</div>
+
+  <button type="button" class="btn-header" (click)="voltar()">Voltar</button>
+</header>
+
+<main class="cadastro-page">
+  <section class="cadastro-card">
+    <div class="cadastro-heading">
+      <span class="cadastro-icon">✏️</span>
+
+      <h1>Cadastrar Exercício</h1>
+
+      <p>Adicione um novo exercício ao Idiomax.</p>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="licao"> Lição </label>
+
+        <select id="licao" [(ngModel)]="codigoLicao">
+          <option [ngValue]="null">Selecione uma lição</option>
+
+          <option *ngFor="let licao of licoes" [ngValue]="licao.codigo">
+            {{ licao.codigo }} - {{ licao.idioma }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="nivel"> Nível </label>
+
+        <select id="nivel" [(ngModel)]="nivelDificuldade">
+          <option [ngValue]="null">Selecione o nível</option>
+
+          <option [ngValue]="1">Nível 1</option>
+
+          <option [ngValue]="2">Nível 2</option>
+
+          <option [ngValue]="3">Nível 3</option>
+        </select>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="descricao"> Pergunta </label>
+
+        <input
+          id="descricao"
+          type="text"
+          [(ngModel)]="descricao"
+          placeholder="Ex: Qual é a tradução de casa?"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="opcaoA"> Alternativa A </label>
+
+        <input id="opcaoA" type="text" [(ngModel)]="opcaoA" placeholder="Digite a alternativa A" />
+      </div>
+
+      <div class="form-group">
+        <label for="opcaoB"> Alternativa B </label>
+
+        <input id="opcaoB" type="text" [(ngModel)]="opcaoB" placeholder="Digite a alternativa B" />
+      </div>
+
+      <div class="form-group">
+        <label for="opcaoC"> Alternativa C </label>
+
+        <input id="opcaoC" type="text" [(ngModel)]="opcaoC" placeholder="Digite a alternativa C" />
+      </div>
+
+      <div class="form-group">
+        <label for="opcaoD"> Alternativa D </label>
+
+        <input id="opcaoD" type="text" [(ngModel)]="opcaoD" placeholder="Digite a alternativa D" />
+      </div>
+
+      <div class="form-group full-width">
+        <label for="resposta"> Resposta correta </label>
+
+        <select id="resposta" [(ngModel)]="respostaCorreta">
+          <option value="">Selecione a resposta correta</option>
+
+          <option *ngIf="opcaoA" [value]="opcaoA">A - {{ opcaoA }}</option>
+
+          <option *ngIf="opcaoB" [value]="opcaoB">B - {{ opcaoB }}</option>
+
+          <option *ngIf="opcaoC" [value]="opcaoC">C - {{ opcaoC }}</option>
+
+          <option *ngIf="opcaoD" [value]="opcaoD">D - {{ opcaoD }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pontuacao-box">
+      <div>
+        <span class="pontuacao-label"> Pontuação </span>
+
+        <strong> 20 pontos </strong>
+      </div>
+
+      <span class="pontuacao-icon"> ⭐ </span>
+    </div>
+
+    <button type="button" class="btn-cadastrar" (click)="cadastrar()" [disabled]="carregando">
+      {{ carregando ? 'Cadastrando...' : 'Cadastrar exercício' }}
+    </button>
+
+    <div *ngIf="mensagem" class="feedback" [class.success]="sucesso" [class.error]="!sucesso">
+      {{ mensagem }}
+    </div>
+
+    <div class="cadastro-footer">
+      <button type="button" class="btn-voltar" (click)="voltar()">
+        ← Voltar para gerenciamento
+      </button>
+    </div>
+  </section>
+</main>

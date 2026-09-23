@@ -4,8 +4,8 @@ from fastapi.responses import FileResponse
 import core.estado as estado
 import os
 
-from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio
-from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao
+from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio, obter_proximo_codigo_exercicio
+from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao, obter_proximo_codigo_licao
 from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma
 from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking, obter_proximo_codigo_usuario
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
@@ -457,28 +457,39 @@ def cadastrar_idioma_api(dados: IdiomaCreate):
 
 @app.post("/exercicios")
 def cadastrar_exercicio_api(dados: ExercicioCreate):
-    if buscar_exercicio(
-        estado.raiz_exercicios,
-        dados.codigo
-    ) is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Código de exercício já cadastrado."
-        )
-
-    if buscar_licao(
+    licao = buscar_licao(
         estado.raiz_licoes,
         dados.codigo_licao
-    ) is None:
+    )
+
+    if licao is None:
         raise HTTPException(
             status_code=404,
             detail="Lição não encontrada."
         )
 
+    if dados.resposta_correta not in dados.opcoes_resposta:
+        raise HTTPException(
+            status_code=400,
+            detail="A resposta correta deve estar entre as opções."
+        )
+
+    codigo_exercicio = obter_proximo_codigo_exercicio(
+        estado.raiz_exercicios,
+        estado.raiz_licoes,
+        dados.codigo_licao
+    )
+
+    if codigo_exercicio is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Não foi possível gerar o código do exercício."
+        )
+
     estado.raiz_exercicios = cadastrar_exercicio(
         estado.raiz_exercicios,
         estado.raiz_licoes,
-        dados.codigo,
+        codigo_exercicio,
         dados.codigo_licao,
         dados.nivel_dificuldade,
         dados.descricao,
@@ -488,20 +499,20 @@ def cadastrar_exercicio_api(dados: ExercicioCreate):
     )
 
     return {
-        "mensagem": "Exercício cadastrado com sucesso."
+        "mensagem": "Exercício cadastrado com sucesso.",
+        "exercicio": {
+            "codigo": codigo_exercicio,
+            "codigo_licao": dados.codigo_licao,
+            "nivel_dificuldade": dados.nivel_dificuldade,
+            "descricao": dados.descricao,
+            "opcoes_resposta": dados.opcoes_resposta,
+            "resposta_correta": dados.resposta_correta,
+            "pontuacao": dados.pontuacao
+        }
     }
 
 @app.post("/licoes")
 def cadastrar_licao_api(dados: LicaoCreate):
-    if buscar_licao(
-        estado.raiz_licoes,
-        dados.codigo
-    ) is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Código de lição já cadastrado."
-        )
-
     if buscar_idioma(
         estado.raiz_idiomas,
         dados.codigo_idioma
@@ -511,16 +522,35 @@ def cadastrar_licao_api(dados: LicaoCreate):
             detail="Idioma não encontrado."
         )
 
+    licoes = listar_licoes(
+        estado.raiz_licoes,
+        []
+    )
+
+    for licao in licoes:
+        if licao.cod_idioma == dados.codigo_idioma:
+            raise HTTPException(
+                status_code=409,
+                detail="Este idioma já possui uma lição cadastrada."
+            )
+    
+    codigo_licao = obter_proximo_codigo_licao(estado.raiz_licoes)
+
     estado.raiz_licoes = cadastrar_licao(
         estado.raiz_licoes,
         estado.raiz_idiomas,
-        dados.codigo,
+        codigo_licao,
         dados.codigo_idioma,
-        dados.total_niveis
+        3
     )
 
     return {
-        "mensagem": "Lição cadastrada com sucesso."
+        "mensagem": "Lição cadastrada com sucesso.",
+        "licao": {
+            "codigo": codigo_licao,
+            "codigo_idioma": dados.codigo_idioma,
+            "total_niveis": 3
+        }
     }
 
 @app.get("/licoes")

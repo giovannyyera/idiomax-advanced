@@ -1,0 +1,56 @@
+<header class="main-header">
+  <div class="logo">
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+    <span class="logo-text">
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
+    </span>
+  </div>
+
+  <div class="header-title">Administração</div>
+
+  <button type="button" class="btn-header" (click)="voltar()">Voltar</button>
+</header>
+
+<main class="cadastro-page">
+  <section class="cadastro-card">
+    <div class="cadastro-heading">
+      <span class="cadastro-icon">🌎</span>
+
+      <h1>Cadastrar Idioma</h1>
+
+      <p>Adicione um novo idioma ao Idiomax.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="codigo"> Código do idioma </label>
+
+      <input id="codigo" type="number" [(ngModel)]="codigoIdioma" placeholder="Ex: 4" />
+    </div>
+
+    <div class="form-group">
+      <label for="descricao"> Descrição </label>
+
+      <input id="descricao" type="text" [(ngModel)]="descricao" placeholder="Ex: Italiano" />
+    </div>
+
+    <button type="button" class="btn-cadastrar" (click)="cadastrar()" [disabled]="carregando">
+      {{ carregando ? 'Cadastrando...' : 'Cadastrar idioma' }}
+    </button>
+
+    <div *ngIf="mensagem" class="feedback" [class.success]="sucesso" [class.error]="!sucesso">
+      {{ mensagem }}
+    </div>
+
+    <div class="cadastro-footer">
+      <button type="button" class="btn-voltar" (click)="voltar()">
+        ← Voltar para gerenciamento
+      </button>
+    </div>
+  </section>
+</main>
