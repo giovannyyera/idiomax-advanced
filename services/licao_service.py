@@ -28,6 +28,9 @@ def desempacotar_licao(dados_binarios):
     )
 
 def cadastrar_licao(raiz_licoes, raiz_idiomas, cod_licao, cod_idioma, total_niveis):
+    if buscar(raiz_licoes, cod_licao) is not None:
+        return raiz_licoes
+    
     idioma = buscar_idioma(raiz_idiomas, cod_idioma)
 
     if idioma is None:

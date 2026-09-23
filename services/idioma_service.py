@@ -14,6 +14,9 @@ def empacotar_idioma(idioma):
     )
 
 def cadastrar_idioma(raiz, codigo, descricao):
+    if buscar(raiz, codigo) is not None:
+        return raiz
+    
     idioma = Idioma(codigo, descricao)
 
     with open ("dados/idiomas.dat", "ab") as arquivo: #a = append, b = binário

@@ -39,6 +39,9 @@ def desempacotar_exercicio(dados_binarios):
     )
 
 def cadastrar_exercicio(raiz_exercicios, raiz_licao, cod_exercicio, cod_licao, nivel_dificuldade, descricao, opcoes_resposta, resposta_correta, pontuacao):
+    if buscar(raiz_exercicios, cod_exercicio) is not None:
+        return raiz_exercicios
+    
     licao = buscar_licao(raiz_licao, cod_licao)
 
     if licao is None:

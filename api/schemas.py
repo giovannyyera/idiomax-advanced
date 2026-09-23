@@ -30,6 +30,7 @@ class RespostaExercicio(BaseModel):
 
         return valor
 
+
 # codigo <= 0
 # → rejeitado
 
@@ -41,3 +42,43 @@ class RespostaExercicio(BaseModel):
 
 # resposta vazia
 # → rejeitada
+
+
+class IdiomaCreate(BaseModel):
+    codigo: int = Field(gt=0)
+    descricao: str = Field(min_length=1)
+
+    @field_validator("descricao")
+    @classmethod
+    def validar_descricao(cls, valor):
+        valor = valor.strip()
+
+        if not valor:
+            raise ValueError("A descrição do idioma é obrigatória.")
+
+        return valor
+
+
+class ExercicioCreate(BaseModel):
+    codigo: int = Field(gt=0)
+    codigo_licao: int = Field(gt=0)
+    nivel_dificuldade: int = Field(ge=1, le=3)
+    descricao: str = Field(min_length=1)
+    opcoes_resposta: list[str]
+    resposta_correta: str = Field(min_length=1)
+    pontuacao: int = Field(gt=0)
+    # validar que existem exatamente 4 alternativas, já que é o padrão atual
+    @field_validator("opcoes_resposta")
+    @classmethod
+    def validar_opcoes(cls, opcoes):
+        if len(opcoes) != 4:
+            raise ValueError(
+                "O exercício deve possuir 4 alternativas."
+            )
+
+        return opcoes
+
+class LicaoCreate(BaseModel):
+    codigo: int = Field(gt=0)
+    codigo_idioma: int = Field(gt=0)
+    total_niveis: int = Field(gt=0)
