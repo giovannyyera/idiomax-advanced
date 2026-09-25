@@ -1,6 +1,6 @@
-# MaxLanguage
+# IdioMax
 
-O **MaxLanguage** é uma aplicação acadêmica para aprendizado de idiomas, desenvolvida com **Python**, **FastAPI** e **Angular**.
+A **IdioMax** é uma aplicação acadêmica para aprendizado de idiomas, desenvolvida com **Python**, **FastAPI** e **Angular**.
 
 O projeto utiliza **arquivos binários `.dat` para persistência dos dados** e uma **Árvore Binária de Busca em memória** para indexação e localização dos registros.
 
@@ -10,7 +10,7 @@ A aplicação permite cadastro de usuários, prática de exercícios por nível,
 
 ## Objetivo do projeto
 
-O objetivo principal do MaxLanguage é aplicar, na prática, conceitos de:
+O objetivo principal do IdioMax é aplicar, na prática, conceitos de:
 
 - Arquivos indexados;
 - Estruturas de dados;
@@ -623,6 +623,6 @@ https://github.com/giovannyyera/idiomax-advanced
 
 ---
 
-## MaxLanguage
+## IdioMax
 
 Aprenda. Pratique. Evolua.

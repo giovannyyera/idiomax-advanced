@@ -14,7 +14,7 @@ from api.schemas import UsuarioCreate, RespostaExercicio, IdiomaCreate, LicaoCre
 
 
 app = FastAPI(
-    title="MaxLanguage API",
+    title="IdioMax API",
     version="1.0.0"
 )
 
@@ -32,7 +32,7 @@ app.add_middleware(
 @app.get("/")
 def inicio():
     return {
-        "mensagem": "MaxLanguage API funcionando!"
+        "mensagem": "IdioMax API funcionando!"
     }
 
 

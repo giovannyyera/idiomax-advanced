@@ -26,7 +26,7 @@ if raiz_exercicios is None:
     raiz_exercicios = carregar_exercicios_iniciais(raiz_exercicios, raiz_licoes)
 
 while True:
-    print("\n- MAXLANGUAGE -")
+    print("\n- IDIOMAX -")
     print("1 - Cadastrar usuário")
     print("2 - Buscar usuário")
     print("3 - Listar usuários")
@@ -385,5 +385,5 @@ while True:
             print("\nExclusão cancelada.")
 
     elif opcao == "7":
-        print("\nEncerrando o MaxLanguage...")
+        print("\nEncerrando o IdioMax...")
         break
