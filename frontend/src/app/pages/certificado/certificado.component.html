@@ -1,0 +1,62 @@
+<header class="main-header">
+  <div class="logo">
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+    <span class="logo-text">
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
+    </span>
+  </div>
+
+  <div class="actions">
+    <a href="#" class="btn-login"> Sair </a>
+  </div>
+</header>
+
+<div class="page-container">
+  <div class="card">
+    <div *ngIf="carregando" class="state-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Verificando certificado...</p>
+    </div>
+
+    <div *ngIf="mensagem && !carregando" class="alert-box">
+      <p>{{ mensagem }}</p>
+    </div>
+
+    <div *ngIf="certificado && !carregando" class="certificate-content">
+      <div class="badge-icon">🏆</div>
+      <h1 class="title">Parabéns, {{ certificado.nome }}!</h1>
+      <p class="subtitle">Seu certificado está pronto para download.</p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Idioma</span>
+          <span class="value">{{ certificado.idioma }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Nível Concluído</span>
+          <span class="value">{{ certificado.nivel_concluido }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Pontuação Total</span>
+          <span class="value highlight">{{ certificado.pontuacao_total }}</span>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" (click)="abrirPdf()">
+        📄 Abrir certificado em PDF
+      </button>
+    </div>
+
+    <div class="card-footer">
+      <button type="button" class="btn btn-secondary" (click)="voltar()">
+        ← Voltar para o painel
+      </button>
+    </div>
+  </div>
+</div>

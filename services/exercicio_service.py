@@ -3,9 +3,9 @@ import struct
 from models.exercicio import Exercicio
 from services.licao_service import buscar_licao
 from services.idioma_service import buscar_idioma
-from estrutura.arvore import inserir, buscar
+from estrutura.arvore import inserir, buscar, excluir
 
-FORMATO_EXERCICIO = "iii100s120s40si" #i = cod_exercicio,cod_licao, nivel_dificuldade, pontuacao, 100s = descricao, 120s = opcoes_resposta, 40s =  resposta_correta
+FORMATO_EXERCICIO = "iii100s300s80si" #i = cod_exercicio,cod_licao, nivel_dificuldade, pontuacao, 100s = descricao, 300s = opcoes_resposta, 80s =  resposta_correta
 TAMANHO_EXERCICIO = struct.calcsize(FORMATO_EXERCICIO)
 
 def empacotar_exercicio(exercicio):
@@ -39,6 +39,9 @@ def desempacotar_exercicio(dados_binarios):
     )
 
 def cadastrar_exercicio(raiz_exercicios, raiz_licao, cod_exercicio, cod_licao, nivel_dificuldade, descricao, opcoes_resposta, resposta_correta, pontuacao):
+    if buscar(raiz_exercicios, cod_exercicio) is not None:
+        return raiz_exercicios
+    
     licao = buscar_licao(raiz_licao, cod_licao)
 
     if licao is None:
@@ -86,7 +89,8 @@ def carregar_indice_exercicios():
                     break
 
                 exercicio = desempacotar_exercicio(dados_binarios)
-                raiz_exercicio = inserir(raiz_exercicio, exercicio.cod_exercicio, posicao)
+                if exercicio.cod_exercicio != 0:
+                    raiz_exercicio = inserir(raiz_exercicio, exercicio.cod_exercicio, posicao)
                 posicao += 1
     except FileNotFoundError:
         return raiz_exercicio
@@ -118,3 +122,42 @@ def listar_exercicios(raiz_exercicios, lista):
         lista.append(exercicio)
         listar_exercicios(raiz_exercicios.direita, lista)
     return lista
+
+def obter_proximo_codigo_exercicio(raiz_exercicios, raiz_licoes, cod_licao):
+    licao = buscar_licao(raiz_licoes, cod_licao)
+
+    if licao is None:
+        return None
+
+    codigo_base = licao.cod_idioma * 1000
+
+    exercicios = listar_exercicios(raiz_exercicios, [])
+
+    maior_codigo = codigo_base
+
+    for exercicio in exercicios:
+        if(exercicio.cod_licao == cod_licao and exercicio.cod_exercicio > maior_codigo):
+            maior_codigo = exercicio.cod_exercicio
+
+    return maior_codigo + 1
+
+def excluir_exercicio(raiz_exercicios, codigo):
+    resultado = buscar(raiz_exercicios, codigo)
+
+    if resultado is None:
+        return raiz_exercicios
+
+    posicao = resultado.posicao
+    exercicio = ler_exercicio(posicao)
+
+    exercicio.cod_exercicio = 0
+
+    with open("dados/exercicios.dat", "r+b") as arquivo:
+        arquivo.seek(posicao * TAMANHO_EXERCICIO)
+        arquivo.write(empacotar_exercicio(exercicio))
+
+    raiz_exercicios = excluir(raiz_exercicios, codigo)
+
+    return raiz_exercicios 
+
+    

@@ -1,0 +1,160 @@
+<header class="main-header">
+  <div class="logo">
+    <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+    <span class="logo-text">
+      <span class="text-blue">I</span>
+      <span class="text-red">DI</span>
+      <span class="text-green">O</span>
+      <span class="text-gold">M</span>
+      <span class="text-blue">A</span>
+      <span class="text-red">X</span>
+    </span>
+  </div>
+
+  <div class="actions">
+    <a class="btn-login" (click)="sair()"> Sair </a>
+  </div>
+</header>
+
+<div class="profile-container">
+  <aside class="sidebar">
+    <div class="user-brief">
+      <div class="avatar">D</div>
+      <h3>Olá, {{ usuario?.nome }}!</h3>
+      <p class="member-since">Membro desde 2026</p>
+    </div>
+
+    <ul class="menu-list">
+      <li
+        class="menu-item"
+        [class.active]="abaAtiva === 'dashboard'"
+        (click)="selecionarAba('dashboard')"
+        style="cursor: pointer"
+      >
+        <a>Dashboard</a>
+      </li>
+
+      <li class="menu-item" (click)="irParaPratica()">
+        <a>Praticar Exercícios</a>
+      </li>
+
+      <!-- <li class="menu-item">
+        <a href="#">Conquistas & Nível</a>
+      </li> -->
+
+      <li class="menu-item" (click)="irParaCertificado()" style="cursor: pointer">
+        <a>Emitir certificado de conclusão</a>
+      </li>
+
+      <li class="menu-item" (click)="irParaRanking()" style="cursor: pointer">
+        <a>Meu Rank</a>
+      </li>
+
+      <li
+        *ngIf="mostrarAreaAdmin"
+        class="menu-item"
+        (click)="irParaAdmin()"
+        style="cursor: pointer"
+      >
+        <a>Gerenciar Conteúdo</a>
+      </li>
+
+      <li
+        class="menu-item"
+        [class.active]="abaAtiva === 'configuracoes'"
+        (click)="selecionarAba('configuracoes')"
+        style="cursor: pointer"
+      >
+        <a>Configurações da Conta</a>
+      </li>
+
+      <li class="menu-item" (click)="sair()" style="cursor: pointer">
+        <a style="color: #c41e3a">Sair</a>
+      </li>
+    </ul>
+  </aside>
+
+  <main class="content-area">
+    <ng-container *ngIf="abaAtiva === 'dashboard'">
+      <section class="card">
+        <h2 class="card-title">Status</h2>
+        <div class="info-grid">
+          <div class="info-box gold">
+            <label>Nível do Perfil</label>
+            <span>{{ usuario?.nivel_atual }}</span>
+          </div>
+          <div
+            class="info-box"
+            [style.border-left-color]="
+              usuario?.idioma?.toLowerCase().includes('inglês')
+                ? '#008751'
+                : usuario?.idioma?.toLowerCase().includes('francês')
+                  ? '#1a73e8'
+                  : usuario?.idioma?.toLowerCase().includes('espanhol')
+                    ? '#d93025'
+                    : '#0047AB'
+            "
+          >
+            <label>Idioma</label>
+            <span>{{ usuario?.idioma }}</span>
+          </div>
+          <div class="info-box">
+            <label>Pontuação</label>
+            <span>{{ usuario?.pontuacao_total }}</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title">Conquistas Recentes</h2>
+        <div class="achievements-container">
+          <div class="badge">⭐ Perfil Verificado</div>
+          <div class="badge">🎯 100% de Avaliações Positivas</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title">Dados Cadastrais</h2>
+        <div class="info-grid">
+          <div>
+            <label style="font-size: 0.85rem; color: #666">E-mail</label>
+            <p><strong>usuario@email.com</strong></p>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="abaAtiva === 'configuracoes'">
+      <section class="card">
+        <h2 class="card-title">Configurações da Conta</h2>
+        <p class="settings-description">Gerencie suas informações de acesso e da conta.</p>
+
+        <div class="settings-form">
+          <div>
+            <label class="settings-label">Nome de exibição</label>
+            <input type="text" [value]="usuario?.nome" class="settings-input" />
+          </div>
+
+          <div>
+            <label class="settings-label">E-mail</label>
+            <input type="email" value="usuario@email.com" class="settings-input" />
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card-title danger-title">Exclusão da Conta</h2>
+        <p class="delete-description">
+          Esta ação é permanente e apagará todos os seus dados no Idiomax.
+        </p>
+
+        <button type="button" class="btn-delete" (click)="excluirConta()">Excluir conta</button>
+
+        <p *ngIf="mensagem" class="delete-message">
+          {{ mensagem }}
+        </p>
+      </section>
+    </ng-container>
+  </main>
+</div>

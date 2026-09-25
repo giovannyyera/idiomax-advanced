@@ -1,0 +1,204 @@
+<div class="ranking-page">
+  <header class="main-header">
+    <div class="logo">
+      <img src="Simb.png" alt="Logo Idiomax" class="logo-img" />
+
+      <span class="logo-text">
+        <span class="text-blue">I</span>
+        <span class="text-red">DI</span>
+        <span class="text-green">O</span>
+        <span class="text-gold">M</span>
+        <span class="text-blue">A</span>
+        <span class="text-red">X</span>
+      </span>
+    </div>
+
+    <div class="header-actions">
+      <a href="#" class="btn-exit">Sair</a>
+    </div>
+  </header>
+
+  <main class="ranking-content">
+    <section class="ranking-header">
+      <h1>
+        <span class="trophy">🏆</span>
+        Ranking Geral
+      </h1>
+
+      <p>Confira os melhores alunos e suas pontuações!</p>
+    </section>
+
+    <div *ngIf="carregando" class="status-card">Carregando ranking...</div>
+
+    <div *ngIf="mensagem" class="status-card error">
+      {{ mensagem }}
+    </div>
+
+    <div *ngIf="ranking.length > 0 && !carregando" class="ranking-wrapper">
+      <section class="podium">
+        <article *ngIf="ranking[1]" class="podium-card second">
+          <div class="medal medal-silver">2</div>
+          <div class="laurel">❧</div>
+          <h2>
+            {{ ranking[1].nome }}
+          </h2>
+
+          <div class="podium-meta">
+            <span
+              class="language-tag"
+              [ngClass]="{
+                'tag-ingles':
+                  ranking[1].idioma?.toLowerCase() === 'inglês' ||
+                  ranking[1].idioma?.toLowerCase() === 'ingles',
+
+                'tag-espanhol': ranking[1].idioma?.toLowerCase() === 'espanhol',
+
+                'tag-frances':
+                  ranking[1].idioma?.toLowerCase() === 'francês' ||
+                  ranking[1].idioma?.toLowerCase() === 'frances',
+              }"
+            >
+              {{ ranking[1].idioma | titlecase }}
+            </span>
+
+            <span class="level-tag"> Nível {{ ranking[1].nivel_atual }} </span>
+          </div>
+
+          <div class="podium-score silver-score">
+            {{ ranking[1].pontuacao_total }}
+
+            <small> pts </small>
+          </div>
+        </article>
+
+        <article *ngIf="ranking[0]" class="podium-card first">
+          <div class="medal medal-gold">1</div>
+
+          <div class="laurel">❧</div>
+
+          <h2>
+            {{ ranking[0].nome }}
+          </h2>
+
+          <div class="podium-meta">
+            <span
+              class="language-tag"
+              [ngClass]="{
+                'tag-ingles':
+                  ranking[0].idioma?.toLowerCase() === 'inglês' ||
+                  ranking[0].idioma?.toLowerCase() === 'ingles',
+
+                'tag-espanhol': ranking[0].idioma?.toLowerCase() === 'espanhol',
+
+                'tag-frances':
+                  ranking[0].idioma?.toLowerCase() === 'francês' ||
+                  ranking[0].idioma?.toLowerCase() === 'frances',
+              }"
+            >
+              {{ ranking[0].idioma | titlecase }}
+            </span>
+
+            <span class="level-tag"> Nível {{ ranking[0].nivel_atual }} </span>
+          </div>
+
+          <div class="podium-score gold-score">
+            {{ ranking[0].pontuacao_total }}
+
+            <small> pts </small>
+          </div>
+        </article>
+
+        <article *ngIf="ranking[2]" class="podium-card third">
+          <div class="medal medal-bronze">3</div>
+
+          <div class="laurel">❧</div>
+
+          <h2>
+            {{ ranking[2].nome }}
+          </h2>
+
+          <div class="podium-meta">
+            <span
+              class="language-tag"
+              [ngClass]="{
+                'tag-ingles':
+                  ranking[2].idioma?.toLowerCase() === 'inglês' ||
+                  ranking[2].idioma?.toLowerCase() === 'ingles',
+
+                'tag-espanhol': ranking[2].idioma?.toLowerCase() === 'espanhol',
+
+                'tag-frances':
+                  ranking[2].idioma?.toLowerCase() === 'francês' ||
+                  ranking[2].idioma?.toLowerCase() === 'frances',
+              }"
+            >
+              {{ ranking[2].idioma | titlecase }}
+            </span>
+
+            <span class="level-tag"> Nível {{ ranking[2].nivel_atual }} </span>
+          </div>
+
+          <div class="podium-score bronze-score">
+            {{ ranking[2].pontuacao_total }}
+
+            <small> pts </small>
+          </div>
+        </article>
+      </section>
+
+      <section *ngIf="ranking.length > 3" class="ranking-table">
+        <div class="table-header">
+          <span> # </span>
+
+          <span> Aluno </span>
+
+          <span> Idioma </span>
+
+          <span> Nível </span>
+
+          <span class="points-column"> Pontos </span>
+        </div>
+
+        <div *ngFor="let usuario of ranking.slice(3); let i = index" class="table-row">
+          <span class="table-position">
+            {{ usuario.posicao || i + 4 }}
+          </span>
+
+          <span class="table-name">
+            {{ usuario.nome }}
+          </span>
+
+          <span>
+            <span
+              class="language-tag"
+              [ngClass]="{
+                'tag-ingles':
+                  usuario.idioma?.toLowerCase() === 'inglês' ||
+                  usuario.idioma?.toLowerCase() === 'ingles',
+
+                'tag-espanhol': usuario.idioma?.toLowerCase() === 'espanhol',
+
+                'tag-frances':
+                  usuario.idioma?.toLowerCase() === 'francês' ||
+                  usuario.idioma?.toLowerCase() === 'frances',
+              }"
+            >
+              {{ usuario.idioma | titlecase }}
+            </span>
+          </span>
+
+          <span>
+            <span class="level-tag"> Nível {{ usuario.nivel_atual }} </span>
+          </span>
+
+          <span class="table-score">
+            {{ usuario.pontuacao_total }}
+          </span>
+        </div>
+      </section>
+      <div class="back-footer">
+        <button type="button" class="btn-text" (click)="voltar()">← Voltar para o painel</button>
+      </div>
+    </div>
+  </main>
+</div>

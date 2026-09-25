@@ -1,0 +1,419 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8f4ed;
+}
+
+/* Header */
+.main-header {
+  width: 100%;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6%;
+  background-color: rgba(255, 250, 242, 0.95);
+  border-bottom: 1px solid #e7d4b5;
+}
+
+/* Logo */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-img {
+  width: 45px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+/* Cores da logo */
+.text-red {
+  color: #d93025;
+}
+
+.text-green {
+  color: #18864b;
+}
+
+.text-gold {
+  color: #e3a008;
+}
+
+.text-blue {
+  color: #1976d2;
+}
+
+/* Menu */
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 45px;
+}
+
+/* Botão header */
+.btn-login {
+  display: inline-block;
+  padding: 13px 30px;
+  background-color: #b87513;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  transition: 0.2s;
+}
+
+.btn-login:hover {
+  background-color: #965c09;
+}
+
+/* Página principal */
+.login-page {
+  width: 100%;
+  height: calc(100vh - 88px);
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  background-image: linear-gradient(rgba(255, 250, 242, 0.18), rgba(255, 250, 242, 0.18)), url('/../backimage.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* LADO ESQUERDO */
+.presentation {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  padding-left: 10%;
+  padding-right: 40px;
+}
+
+.presentation-content {
+  max-width: 550px;
+}
+
+.presentation h1 {
+  font-family: Georgia, serif;
+  font-size: 65px;
+  font-weight: normal;
+  line-height: 1.02;
+  color: #171717;
+  margin-bottom: 25px;
+}
+
+.presentation h1 span {
+  color: #b66b08;
+  font-style: italic;
+}
+
+.presentation p {
+  font-family: Georgia, serif;
+  font-size: 21px;
+  line-height: 1.5;
+  color: #5f5f5f;
+}
+
+/* ÁREA DO LOGIN */
+.login-area {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+}
+
+/* CARD */
+.login-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 45px 45px 35px;
+  background-color: rgba(255, 255, 255, 0.93);
+  border: 1px solid #e7d8c5;
+  border-radius: 22px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+/* LOGO DO CARD */
+.card-logo {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+.card-brand {
+  font-family: Georgia, serif;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 27px;
+}
+
+/* TÍTULO */
+.login-card h2 {
+  font-family: Georgia, serif;
+  font-size: 35px;
+  font-weight: normal;
+  color: #171717;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+/* FORMULÁRIO */
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* INPUT */
+.input-code {
+  width: 100%;
+  height: 58px;
+  padding: 0 20px;
+  font-size: 17px;
+  border: 1px solid #bcbcbc;
+  border-radius: 9px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input-code::placeholder {
+  color: #888;
+}
+
+.input-code:focus {
+  border-color: #c37b12;
+  box-shadow: 0 0 0 3px rgba(195, 123, 18, 0.12);
+}
+
+/* REMOVE SETAS DO INPUT NUMBER */
+.input-code::-webkit-outer-spin-button,
+.input-code::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-code[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* BOTÃO ENTRAR */
+.btn-submit {
+  width: 100%;
+  height: 60px;
+  border: none;
+  border-radius: 12px;
+  background-color: #c17b13;
+  color: #fff;
+  font-family: Georgia, serif;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #a6650c;
+
+  transform: translateY(-1px);
+}
+
+.btn-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.arrow {
+  margin-left: 15px;
+  font-size: 25px;
+}
+
+/* MENSAGEM DO BACK-END */
+.feedback-msg {
+  margin-top: 18px;
+  padding: 10px;
+  font-size: 15px;
+  color: #c62828;
+  background-color: #fff0f0;
+  border-radius: 6px;
+}
+
+/* LINHA */
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e3ddd5;
+  margin: 30px 0 22px;
+}
+
+/* CADASTRO */
+.register-area {
+  font-size: 16px;
+  color: #555;
+}
+
+.register-area p {
+  margin-bottom: 5px;
+}
+
+.register-link {
+  color: #b36b09;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.register-link:hover {
+  color: #804a00;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 1000px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .presentation {
+    width: 45%;
+
+    padding-left: 5%;
+  }
+
+  .login-area {
+    width: 55%;
+  }
+
+  .presentation h1 {
+    font-size: 50px;
+  }
+}
+
+@media (max-width: 760px) {
+  .main-header {
+    height: 75px;
+
+    padding: 0 20px;
+  }
+
+  .logo-img {
+    width: 35px;
+    height: 45px;
+  }
+
+  .logo-text {
+    font-size: 25px;
+  }
+
+  .btn-login {
+    padding: 10px 20px;
+
+    font-size: 15px;
+  }
+
+  .login-page {
+    min-height: calc(100vh - 75px);
+
+    flex-direction: column;
+
+    background-position: center;
+  }
+
+  .presentation {
+    width: 100%;
+
+    padding: 50px 25px 20px;
+
+    justify-content: center;
+
+    text-align: center;
+  }
+
+  .presentation h1 {
+    font-size: 42px;
+  }
+
+  .presentation p {
+    font-size: 18px;
+  }
+
+  .login-area {
+    width: 100%;
+
+    padding: 25px 20px 60px;
+  }
+
+  .login-card {
+    padding: 35px 25px;
+
+    max-width: 500px;
+  }
+
+  .login-card h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 450px) {
+  .logo-text {
+    font-size: 21px;
+  }
+
+  .btn-login {
+    padding: 9px 14px;
+  }
+
+  .presentation h1 {
+    font-size: 35px;
+  }
+
+  .presentation p {
+    font-size: 16px;
+  }
+
+  .login-card {
+    border-radius: 15px;
+  }
+}

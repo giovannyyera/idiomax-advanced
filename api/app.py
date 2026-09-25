@@ -4,13 +4,13 @@ from fastapi.responses import FileResponse
 import core.estado as estado
 import os
 
-from services.exercicio_service import listar_exercicios, buscar_exercicio
-from services.licao_service import buscar_licao
-from services.idioma_service import listar_idiomas, buscar_idioma
-from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking
+from services.exercicio_service import listar_exercicios, buscar_exercicio, cadastrar_exercicio, obter_proximo_codigo_exercicio, excluir_exercicio
+from services.licao_service import buscar_licao, listar_licoes, cadastrar_licao, obter_proximo_codigo_licao, excluir_licao
+from services.idioma_service import listar_idiomas, buscar_idioma, cadastrar_idioma, obter_proximo_codigo_idioma, excluir_idioma
+from services.usuario_service import listar_usuarios, buscar_usuario_com_idioma, cadastrar_usuario, buscar_usuario, excluir_usuario, gerar_ranking, obter_proximo_codigo_usuario
 from services.pratica_service import responder_exercicio, finalizar_rodada, emitir_certificado
 from services.certificado_service import gerar_certificado_pdf
-from api.schemas import UsuarioCreate, RespostaExercicio
+from api.schemas import UsuarioCreate, RespostaExercicio, IdiomaCreate, LicaoCreate, ExercicioCreate
 
 
 app = FastAPI(
@@ -104,17 +104,6 @@ def buscar_usuario_api(codigo: int):
 
 @app.post("/usuarios")
 def cadastrar_usuario_api(dados: UsuarioCreate):
-    usuario_existente = buscar_usuario(
-        estado.raiz_usuarios,
-        dados.codigo
-    )
-
-    if usuario_existente is not None:
-        raise HTTPException(
-            status_code=409,
-            detail="Já existe um usuário com esse código"
-        )
-
     idioma = buscar_idioma(
         estado.raiz_idiomas,
         dados.codigo_idioma_aprendizado
@@ -126,17 +115,21 @@ def cadastrar_usuario_api(dados: UsuarioCreate):
             detail="Idioma não encontrado"
         )
 
+    codigo_usuario = obter_proximo_codigo_usuario(
+        estado.raiz_usuarios
+    )
+
     estado.raiz_usuarios = cadastrar_usuario(
         estado.raiz_usuarios,
         estado.raiz_idiomas,
-        dados.codigo,
+        codigo_usuario,
         dados.nome,
         dados.codigo_idioma_aprendizado
     )
 
     usuario = buscar_usuario(
         estado.raiz_usuarios,
-        dados.codigo
+        codigo_usuario
     )
 
     return {
@@ -436,3 +429,284 @@ def certificado_pdf_api(codigo: int):
         media_type="application/pdf",
         filename=f"certificado_{codigo}.pdf"
     )
+
+@app.post("/idiomas")
+def cadastrar_idioma_api(dados: IdiomaCreate):
+    idiomas = listar_idiomas(
+        estado.raiz_idiomas,
+        []
+    )
+
+    for idioma in idiomas:
+        if (
+            idioma.descricao.strip().lower()
+            == dados.descricao.strip().lower()
+        ):
+            raise HTTPException(
+                status_code=409,
+                detail="Este idioma já está cadastrado."
+            )
+
+    codigo_idioma = obter_proximo_codigo_idioma(
+        estado.raiz_idiomas
+    )
+
+    estado.raiz_idiomas = cadastrar_idioma(
+        estado.raiz_idiomas,
+        codigo_idioma,
+        dados.descricao
+    )
+
+    return {
+        "mensagem": "Idioma cadastrado com sucesso.",
+        "idioma": {
+            "codigo": codigo_idioma,
+            "descricao": dados.descricao
+        }
+    }
+
+@app.post("/exercicios")
+def cadastrar_exercicio_api(dados: ExercicioCreate):
+    licao = buscar_licao(
+        estado.raiz_licoes,
+        dados.codigo_licao
+    )
+
+    if licao is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Lição não encontrada."
+        )
+
+    if dados.resposta_correta not in dados.opcoes_resposta:
+        raise HTTPException(
+            status_code=400,
+            detail="A resposta correta deve estar entre as opções."
+        )
+
+    codigo_exercicio = obter_proximo_codigo_exercicio(
+        estado.raiz_exercicios,
+        estado.raiz_licoes,
+        dados.codigo_licao
+    )
+
+    if codigo_exercicio is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Não foi possível gerar o código do exercício."
+        )
+
+    estado.raiz_exercicios = cadastrar_exercicio(
+        estado.raiz_exercicios,
+        estado.raiz_licoes,
+        codigo_exercicio,
+        dados.codigo_licao,
+        dados.nivel_dificuldade,
+        dados.descricao,
+        dados.opcoes_resposta,
+        dados.resposta_correta,
+        dados.pontuacao
+    )
+
+    return {
+        "mensagem": "Exercício cadastrado com sucesso.",
+        "exercicio": {
+            "codigo": codigo_exercicio,
+            "codigo_licao": dados.codigo_licao,
+            "nivel_dificuldade": dados.nivel_dificuldade,
+            "descricao": dados.descricao,
+            "opcoes_resposta": dados.opcoes_resposta,
+            "resposta_correta": dados.resposta_correta,
+            "pontuacao": dados.pontuacao
+        }
+    }
+
+@app.post("/licoes")
+def cadastrar_licao_api(dados: LicaoCreate):
+    if buscar_idioma(
+        estado.raiz_idiomas,
+        dados.codigo_idioma
+    ) is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Idioma não encontrado."
+        )
+
+    licoes = listar_licoes(
+        estado.raiz_licoes,
+        []
+    )
+
+    for licao in licoes:
+        if licao.cod_idioma == dados.codigo_idioma:
+            raise HTTPException(
+                status_code=409,
+                detail="Este idioma já possui uma lição cadastrada."
+            )
+    
+    codigo_licao = obter_proximo_codigo_licao(estado.raiz_licoes)
+
+    estado.raiz_licoes = cadastrar_licao(
+        estado.raiz_licoes,
+        estado.raiz_idiomas,
+        codigo_licao,
+        dados.codigo_idioma,
+        3
+    )
+
+    return {
+        "mensagem": "Lição cadastrada com sucesso.",
+        "licao": {
+            "codigo": codigo_licao,
+            "codigo_idioma": dados.codigo_idioma,
+            "total_niveis": 3
+        }
+    }
+
+@app.get("/licoes")
+def listar_licoes_api():
+    licoes = listar_licoes(
+        estado.raiz_licoes,
+        []
+    )
+
+    resultado = []
+
+    for licao in licoes:
+        idioma = buscar_idioma(
+            estado.raiz_idiomas,
+            licao.cod_idioma
+        )
+
+        resultado.append({
+            "codigo": licao.cod_licao,
+            "codigo_idioma": licao.cod_idioma,
+            "idioma": idioma.descricao if idioma else None,
+            "total_niveis": licao.total_niveis
+        })
+
+    return resultado
+
+@app.get("/exercicios")
+def listar_exercicios_api():
+    exercicios = listar_exercicios(
+        estado.raiz_exercicios,
+        []
+    )
+
+    resultado = []
+
+    for exercicio in exercicios:
+        resultado.append({
+            "codigo": exercicio.cod_exercicio,
+            "codigo_licao": exercicio.cod_licao,
+            "nivel_dificuldade": exercicio.nivel_dificuldade,
+            "descricao": exercicio.descricao,
+            "opcoes": exercicio.opcoes_resposta,
+            "resposta_correta": exercicio.resposta_correta,
+            "pontuacao": exercicio.pontuacao
+        })
+
+    return resultado
+
+@app.delete("/exercicios/{codigo}")
+def excluir_exercicio_api(codigo: int):
+    exercicio = buscar_exercicio(
+        estado.raiz_exercicios,
+        codigo
+    )
+
+    if exercicio is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Exercício não encontrado."
+        )
+
+    estado.raiz_exercicios = excluir_exercicio(
+        estado.raiz_exercicios,
+        codigo
+    )
+
+    return {
+        "mensagem": "Exercício excluído com sucesso."
+    }
+
+@app.delete("/licoes/{codigo}")
+def excluir_licao_api(codigo: int):
+    licao = buscar_licao(
+        estado.raiz_licoes,
+        codigo
+    )
+
+    if licao is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Lição não encontrada."
+        )
+
+    exercicios = listar_exercicios(
+        estado.raiz_exercicios,
+        []
+    )
+
+    for exercicio in exercicios:
+        if exercicio.cod_licao == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir a lição porque existem exercícios vinculados."
+            )
+
+    estado.raiz_licoes = excluir_licao(
+        estado.raiz_licoes,
+        codigo
+    )
+
+    return {
+        "mensagem": "Lição excluída com sucesso."
+    }
+
+@app.delete("/idiomas/{codigo}")
+def excluir_idioma_api(codigo: int):
+    idioma = buscar_idioma(
+        estado.raiz_idiomas,
+        codigo
+    )
+
+    if idioma is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Idioma não encontrado."
+        )
+
+    licoes = listar_licoes(
+        estado.raiz_licoes,
+        []
+    )
+
+    for licao in licoes:
+        if licao.cod_idioma == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir o idioma porque existem lições vinculadas."
+            )
+
+    usuarios = listar_usuarios(
+        estado.raiz_usuarios,
+        []
+    )
+
+    for usuario in usuarios:
+        if usuario.codigo_idioma_aprendizado == codigo:
+            raise HTTPException(
+                status_code=409,
+                detail="Não é possível excluir o idioma porque existem usuários vinculados."
+            )
+
+    estado.raiz_idiomas = excluir_idioma(
+        estado.raiz_idiomas,
+        codigo
+    )
+
+    return {
+        "mensagem": "Idioma excluído com sucesso."
+    }
