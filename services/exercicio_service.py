@@ -5,7 +5,7 @@ from services.licao_service import buscar_licao
 from services.idioma_service import buscar_idioma
 from estrutura.arvore import inserir, buscar, excluir
 
-FORMATO_EXERCICIO = "iii100s120s40si" #i = cod_exercicio,cod_licao, nivel_dificuldade, pontuacao, 100s = descricao, 120s = opcoes_resposta, 40s =  resposta_correta
+FORMATO_EXERCICIO = "iii100s300s80si" #i = cod_exercicio,cod_licao, nivel_dificuldade, pontuacao, 100s = descricao, 300s = opcoes_resposta, 80s =  resposta_correta
 TAMANHO_EXERCICIO = struct.calcsize(FORMATO_EXERCICIO)
 
 def empacotar_exercicio(exercicio):
